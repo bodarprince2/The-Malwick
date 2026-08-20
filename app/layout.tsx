@@ -18,25 +18,70 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "The Melwick | Premium Clothing Brand — Coming Soon",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://themelwick.com"),
+  title: {
+    default: "The Melwick | Premium Streetwear & Modern Heritage Apparel",
+    template: "%s | The Melwick"
+  },
   description:
-    "The Melwick is launching soon — a premium clothing brand redefining modern style. Sign up now to get early access, exclusive drops, and launch-day offers.",
-  keywords:
-    "clothing brand, The Melwick, streetwear, premium apparel, fashion launch, new clothing brand 2026",
+    "The Melwick is a premium clothing brand redefining everyday style. Discover our modern heritage apparel and luxury streetwear. Sign up for early access.",
+  keywords: [
+    "The Melwick",
+    "premium streetwear clothing",
+    "modern heritage apparel",
+    "luxury everyday style",
+    "exclusive clothing brand launch",
+    "streetwear fashion",
+    "premium apparel",
+    "elevated streetwear",
+    "quality craftsmanship clothing"
+  ],
+  authors: [{ name: "The Melwick" }],
+  creator: "The Melwick",
+  publisher: "The Melwick",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
-    title: "The Melwick | Premium Clothing Brand — Coming Soon",
+    title: "The Melwick | Premium Streetwear & Modern Heritage Apparel",
     description:
-      "The Melwick is launching soon — a premium clothing brand redefining modern style. Sign up now to get early access, exclusive drops, and launch-day offers.",
-    images: [{ url: "/logo.png", width: 1200, height: 630, alt: "The Melwick Logo" }],
-    type: "website",
+      "The Melwick is a premium clothing brand redefining everyday style. Discover our modern heritage apparel and luxury streetwear. Sign up for early access.",
+    url: "https://themelwick.com",
     siteName: "The Melwick",
+    images: [
+      {
+        url: "/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "The Melwick - Premium Streetwear Logo",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "The Melwick | Premium Clothing Brand — Coming Soon",
+    title: "The Melwick | Premium Streetwear & Modern Heritage Apparel",
     description:
-      "The Melwick is launching soon — a premium clothing brand redefining modern style.",
+      "The Melwick is a premium clothing brand redefining everyday style. Discover our modern heritage apparel and luxury streetwear.",
     images: ["/logo.png"],
+    creator: "@themelwick",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   icons: {
     icon: [

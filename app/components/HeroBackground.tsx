@@ -1,62 +1,54 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
+import Image from "next/image";
 
 const slides = [
-  { src: "/mood1.jpg", alt: "Premium dark fabric texture — editorial fashion photography" },
-  { src: "/mood2.jpg", alt: "Luxury knit sweater on dark marble — high-end apparel" },
-  { src: "/mood3.jpg", alt: "Dark leather jacket — modern streetwear fashion" },
+  { src: "/mens_hero.png", alt: "Premium modern menswear editorial photography featuring a forest green tailored coat" },
+  { src: "/mens_hero_2.png", alt: "Premium modern menswear editorial photography featuring an ivory cable-knit sweater" },
+  { src: "/mens_hero_3.png", alt: "Premium modern menswear editorial photography featuring a tailored charcoal blazer" },
 ];
 
 export default function HeroBackground() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [imagesLoaded, setImagesLoaded] = useState(false);
-
-  const nextSlide = useCallback(() => {
-    setActiveIndex((prev) => (prev + 1) % slides.length);
-  }, []);
-
-  // Preload images
-  useEffect(() => {
-    let loaded = 0;
-    slides.forEach((slide) => {
-      const img = new window.Image();
-      img.onload = () => {
-        loaded++;
-        if (loaded === slides.length) setImagesLoaded(true);
-      };
-      img.onerror = () => {
-        loaded++;
-        if (loaded === slides.length) setImagesLoaded(true);
-      };
-      img.src = slide.src;
-    });
-
-    // Fallback: show anyway after 2s
-    const fallback = setTimeout(() => setImagesLoaded(true), 2000);
-    return () => clearTimeout(fallback);
-  }, []);
 
   // Auto-advance carousel
   useEffect(() => {
-    if (!imagesLoaded) return;
-    const interval = setInterval(nextSlide, 6000);
+    const interval = setInterval(() => {
+      setActiveIndex((prev) => (prev + 1) % slides.length);
+    }, 5000);
     return () => clearInterval(interval);
-  }, [imagesLoaded, nextSlide]);
+  }, []);
 
   return (
-    <div className="hero-bg" aria-hidden="true">
+    <div className="absolute inset-0 z-0 overflow-hidden bg-[#fdfbf7]" aria-hidden="true">
       {slides.map((slide, i) => (
         <div
           key={slide.src}
-          className={`hero-bg-slide ${i === activeIndex ? "active" : ""}`}
-          style={{ backgroundImage: `url(${slide.src})` }}
-          role="img"
-          aria-label={slide.alt}
-        />
+          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+            i === activeIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+          }`}
+        >
+          <Image
+            src={slide.src}
+            alt={slide.alt}
+            fill
+            priority={i === 0} // Only preload the first image for performance
+            quality={90}
+            className="object-cover object-[center_top]"
+            sizes="100vw"
+          />
+        </div>
       ))}
-      <div className="hero-bg-overlay" />
-      <div className="hero-grain" />
+      
+      {/* Ivory overlay to ensure the dark text (#1a3c34) is always readable regardless of the model's dark clothing */}
+      <div className="absolute inset-0 z-20 bg-[#fdfbf7]/40 pointer-events-none" />
+      <div className="absolute inset-0 z-20 bg-gradient-to-b from-[#fdfbf7]/60 via-transparent to-[#fdfbf7]/80 pointer-events-none" />
+      
+      {/* Radial glow directly in the center to highlight the "MELWICK" text */}
+      <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
+        <div className="w-[800px] h-[400px] bg-[#fdfbf7]/50 blur-[80px] rounded-[100%]" />
+      </div>
     </div>
   );
 }

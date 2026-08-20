@@ -74,21 +74,21 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
   ];
 
   return (
-    <div className="countdown" role="timer" aria-label="Countdown to launch">
+    <div className="flex items-center gap-4 text-[#1a3c34] justify-center" role="timer" aria-label="Countdown to launch">
       {units.map((unit, i) => (
         <div key={unit.key} style={{ display: "contents" }}>
           {i > 0 && (
-            <span className="countdown-separator" aria-hidden="true">
+            <span className="text-2xl font-light opacity-50 pb-4" aria-hidden="true">
               :
             </span>
           )}
-          <div className="countdown-unit">
-            <div className="countdown-value" aria-label={`${time[unit.key]} ${unit.label}`}>
-              <span className={`digit ${changing[unit.key] ? "changing" : ""}`}>
+          <div className="flex flex-col items-center">
+            <div className="font-display text-4xl md:text-5xl font-medium tracking-wide w-14 md:w-16 text-center text-[#1a3c34]" aria-label={`${time[unit.key]} ${unit.label}`}>
+              <span className={`inline-block transition-transform duration-300 ${changing[unit.key] ? "scale-90 opacity-70" : "scale-100 opacity-100"}`}>
                 {mounted ? padTwo(time[unit.key]) : "--"}
               </span>
             </div>
-            <span className="countdown-label">{unit.label}</span>
+            <span className="text-[0.55rem] font-medium tracking-widest uppercase mt-2 text-[#4a5c54]">{unit.label}</span>
           </div>
         </div>
       ))}
