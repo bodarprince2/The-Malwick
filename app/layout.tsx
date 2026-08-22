@@ -94,9 +94,9 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/the-melwick-logo.svg", type: "image/svg+xml" },
+      { url: "/icon.svg", type: "image/svg+xml" },
     ],
-    shortcut: "/the-melwick-logo.svg",
+    shortcut: "/icon.svg",
     apple: "/the-melwick-logo.png",
   },
 };
