@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const slides = [
-  { src: "/mens_hero.png", alt: "Premium modern menswear editorial photography featuring a forest green tailored coat" },
-  { src: "/mens_hero_2.png", alt: "Premium modern menswear editorial photography featuring an ivory cable-knit sweater" },
-  { src: "/mens_hero_3.png", alt: "Premium modern menswear editorial photography featuring a tailored charcoal blazer" },
+  { src: "/the-melwick-mens-forest-green-tailored-coat.png", alt: "Premium modern menswear editorial photography featuring a forest green tailored coat" },
+  { src: "/the-melwick-mens-ivory-cable-knit-sweater.png", alt: "Premium modern menswear editorial photography featuring an ivory cable-knit sweater" },
+  { src: "/the-melwick-mens-tailored-charcoal-blazer.png", alt: "Premium modern menswear editorial photography featuring a tailored charcoal blazer" },
 ];
 
 export default function HeroBackground() {

@@ -27,13 +27,22 @@ export const metadata: Metadata = {
     "The Melwick is a premium clothing brand redefining everyday style. Discover our modern heritage apparel and luxury streetwear. Sign up for early access.",
   keywords: [
     "The Melwick",
-    "premium streetwear clothing",
+    "Melwick",
+    "Malwick",
+    "The Malwick",
+    "Mel",
+    "Male",
+    "luxury streetwear brands",
+    "premium streetwear essentials",
     "modern heritage apparel",
-    "luxury everyday style",
+    "high-end streetwear clothing",
+    "timeless streetwear",
+    "minimalist streetwear",
+    "elevated basics",
+    "heritage-inspired urban wear",
     "exclusive clothing brand launch",
-    "streetwear fashion",
-    "premium apparel",
-    "elevated streetwear",
+    "heavyweight hoodies",
+    "oversized graphic tees",
     "quality craftsmanship clothing"
   ],
   authors: [{ name: "The Melwick" }],
@@ -55,7 +64,7 @@ export const metadata: Metadata = {
     siteName: "The Melwick",
     images: [
       {
-        url: "/logo.png",
+        url: "/the-melwick-logo.png",
         width: 1200,
         height: 630,
         alt: "The Melwick - Premium Streetwear Logo",
@@ -69,7 +78,7 @@ export const metadata: Metadata = {
     title: "The Melwick | Premium Streetwear & Modern Heritage Apparel",
     description:
       "The Melwick is a premium clothing brand redefining everyday style. Discover our modern heritage apparel and luxury streetwear.",
-    images: ["/logo.png"],
+    images: ["/the-melwick-logo.png"],
     creator: "@themelwick",
   },
   robots: {
@@ -85,11 +94,10 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
-      { url: "/favicon.png", type: "image/png" },
+      { url: "/the-melwick-logo.svg", type: "image/svg+xml" },
     ],
-    shortcut: "/favicon.png",
-    apple: "/apple-touch-icon.png",
+    shortcut: "/the-melwick-logo.svg",
+    apple: "/the-melwick-logo.png",
   },
 };
 

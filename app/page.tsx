@@ -3,10 +3,10 @@ import Countdown from "./components/Countdown";
 import EmailSignup from "./components/EmailSignup";
 import HeroBackground from "./components/HeroBackground";
 import ScrollEffects from "./components/ScrollEffects";
+import Navigation from "./components/Navigation";
 import {
   InstagramIcon,
-  TikTokIcon,
-  PinterestIcon,
+  FacebookIcon,
   XTwitterIcon,
 } from "./components/SocialIcons";
 
@@ -20,15 +20,15 @@ const jsonLd = {
       "@type": "Organization",
       "@id": "https://themelwick.com/#organization",
       "name": "The Melwick",
+      "alternateName": ["Melwick", "Malwick", "The Malwick", "Mel", "Male"],
       "url": "https://themelwick.com",
       "logo": {
         "@type": "ImageObject",
-        "url": "https://themelwick.com/logo.png"
+        "url": "https://themelwick.com/the-melwick-logo.png"
       },
       "sameAs": [
-        "https://instagram.com",
-        "https://tiktok.com",
-        "https://pinterest.com",
+        "https://www.instagram.com/themelwick/",
+        "https://www.facebook.com/themelwick/",
         "https://x.com"
       ]
     },
@@ -56,11 +56,11 @@ export default function Home() {
       <div className="page-loader fixed inset-0 z-[9999] bg-[#fdfbf7] flex items-center justify-center transition-all duration-800 ease-out aria-hidden:opacity-0 aria-hidden:pointer-events-none [&.loaded]:opacity-0 [&.loaded]:pointer-events-none" aria-hidden="true">
         <div className="flex flex-col items-center gap-6">
           <Image
-            src="/favicon.png"
+            src="/the-melwick-logo.svg"
             alt=""
-            width={50}
-            height={50}
-            className="w-12 h-12 opacity-80"
+            width={64}
+            height={64}
+            className="w-14 h-14 md:w-16 md:h-16 opacity-80"
             priority
           />
           <div className="w-32 h-[1px] bg-[#1a3c34]/10 overflow-hidden">
@@ -75,39 +75,17 @@ export default function Home() {
       {/* ── Header ── */}
       <header className="site-header fixed top-0 left-0 right-0 z-[100] px-6 py-6 md:px-12 flex items-center justify-between transition-all duration-500 bg-transparent [&.scrolled]:bg-[#fdfbf7]/95 [&.scrolled]:backdrop-blur-md [&.scrolled]:border-b [&.scrolled]:border-[#1a3c34]/10 [&.scrolled]:py-4 animate-fade-in" id="site-header">
         <a href="/" className="flex items-center gap-3 no-underline text-[#1a3c34]" aria-label="The Melwick — Home">
-          <div className="flex items-center justify-center w-10 h-10 border border-[#1a3c34]/10 rounded bg-[#fdfbf7] transition-transform duration-300 hover:scale-105">
-            <Image
-              src="/favicon.png"
-              alt="The Melwick logo"
-              width={24}
-              height={24}
-              className="w-6 h-6 object-contain"
-              priority
-            />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-display text-xl font-semibold tracking-[0.12em] uppercase leading-tight text-[#1a3c34]">The Melwick</span>
-            <span className="font-body text-[0.55rem] font-normal tracking-[0.2em] uppercase text-[#4a5c54] leading-none">Est. 2026</span>
-          </div>
+          <Image
+            src="/the-melwick-logo.svg"
+            alt="The Melwick logo"
+            width={64}
+            height={64}
+            className="w-14 h-14 md:w-16 md:h-16 object-contain transition-transform duration-300 hover:scale-105"
+            priority
+          />
+
         </a>
-        <nav className="flex items-center gap-8" aria-label="Primary navigation">
-          <a
-            href="#signup-section"
-            className="font-body text-xs font-medium tracking-[0.14em] uppercase text-[#4a5c54] no-underline transition-colors hover:text-[#1a3c34]"
-            id="nav-notify"
-          >
-            Get Notified
-          </a>
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hidden md:flex items-center gap-2 font-body text-xs font-medium tracking-[0.14em] uppercase text-[#4a5c54] no-underline transition-colors hover:text-[#1a3c34]"
-            id="nav-instagram"
-          >
-            Instagram
-          </a>
-        </nav>
+        <Navigation />
       </header>
 
       <main>
@@ -168,7 +146,7 @@ export default function Home() {
             {/* New Editorial Layout with Image */}
             <div className="relative h-[600px] w-full rounded-sm overflow-hidden shadow-sm">
               <Image
-                src="/story.png"
+                src="/the-melwick-brand-story.png"
                 alt="Premium clothing fabric texture"
                 fill
                 className="object-cover"
@@ -228,7 +206,7 @@ export default function Home() {
           <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#4a5c54] mb-10">Follow The Journey</p>
           <div className="flex justify-center gap-8">
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/themelwick/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#1a3c34] hover:text-[#c4a977] transition-colors p-3 bg-[#f6f3eb] rounded-full flex items-center justify-center w-12 h-12"
@@ -237,25 +215,16 @@ export default function Home() {
             >
               <InstagramIcon />
             </a>
+
             <a
-              href="https://tiktok.com"
+              href="https://www.facebook.com/themelwick/"
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#1a3c34] hover:text-[#c4a977] transition-colors p-3 bg-[#f6f3eb] rounded-full flex items-center justify-center w-12 h-12"
-              aria-label="Follow The Melwick on TikTok"
-              id="social-tiktok"
+              aria-label="Follow The Melwick on Facebook"
+              id="social-facebook"
             >
-              <TikTokIcon />
-            </a>
-            <a
-              href="https://pinterest.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#1a3c34] hover:text-[#c4a977] transition-colors p-3 bg-[#f6f3eb] rounded-full flex items-center justify-center w-12 h-12"
-              aria-label="Follow The Melwick on Pinterest"
-              id="social-pinterest"
-            >
-              <PinterestIcon />
+              <FacebookIcon />
             </a>
             <a
               href="https://x.com"
@@ -272,22 +241,8 @@ export default function Home() {
       </main>
 
       {/* ── Footer ── */}
-      <footer className="bg-[#1a3c34] text-[#fdfbf7] py-16 px-6 md:px-12" id="site-footer">
-        <div className="max-w-7xl mx-auto flex flex-col items-center md:flex-row justify-between gap-8">
-          <div className="flex flex-col items-center md:items-start">
-            <Image
-              src="/favicon.png"
-              alt=""
-              width={24}
-              height={24}
-              className="w-6 h-6 object-contain mb-4 filter invert opacity-80"
-            />
-            <p className="font-display text-xl font-semibold tracking-widest uppercase mb-1 text-[#c4a977]">
-              The Melwick
-            </p>
-            <p className="text-xs text-[#fdfbf7]/50 tracking-wider">Est. 2026</p>
-          </div>
-          
+      <footer className="bg-[#1a3c34] text-[#fdfbf7] py-16 px-6 md:px-12 border-t border-[#fdfbf7]/10" id="site-footer">
+        <div className="max-w-7xl mx-auto flex flex-col items-center justify-center gap-8">
           <div className="flex gap-8 text-sm font-medium tracking-widest uppercase text-[#fdfbf7]/70">
             <a href="/about" className="hover:text-[#c4a977] transition-colors">About</a>
             <a href="/contact" className="hover:text-[#c4a977] transition-colors">Contact</a>
@@ -296,7 +251,7 @@ export default function Home() {
         </div>
         
         <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-[#fdfbf7]/10 flex justify-center text-center">
-          <p className="text-xs text-[#fdfbf7]/40 tracking-wide">
+          <p className="text-xs text-[#fdfbf7]/50 tracking-wide">
             &copy; 2026 The Melwick. All rights reserved.
           </p>
         </div>
