@@ -38,6 +38,7 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
 
   // Only start after hydration to avoid mismatch
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     setTime(getTimeLeft(target));
   // eslint-disable-next-line react-hooks/exhaustive-deps

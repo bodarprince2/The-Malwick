@@ -75,7 +75,7 @@ export default function Contact() {
         <div className="space-y-8 text-lg leading-relaxed text-[#4a5c54]">
           <p>
             Have a question about our upcoming launch, sizing, or press inquiries? 
-            We'd love to hear from you.
+            We&apos;d love to hear from you.
           </p>
           
           <h2 className="font-display text-2xl md:text-3xl font-medium text-[#1a3c34] mt-16 mb-6">

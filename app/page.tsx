@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import Countdown from "./components/Countdown";
 import EmailSignup from "./components/EmailSignup";
 import HeroBackground from "./components/HeroBackground";
@@ -74,7 +75,7 @@ export default function Home() {
 
       {/* ── Header ── */}
       <header className="site-header fixed top-0 left-0 right-0 z-[100] px-6 py-6 md:px-12 flex items-center justify-between transition-all duration-500 bg-transparent [&.scrolled]:bg-[#fdfbf7]/95 [&.scrolled]:backdrop-blur-md [&.scrolled]:border-b [&.scrolled]:border-[#1a3c34]/10 [&.scrolled]:py-4 animate-fade-in" id="site-header">
-        <a href="/" className="flex items-center gap-3 no-underline text-[#1a3c34]" aria-label="The Melwick — Home">
+        <Link href="/" className="flex items-center gap-3 no-underline text-[#1a3c34]" aria-label="The Melwick — Home">
           <Image
             src="/the-melwick-logo.svg"
             alt="The Melwick logo"
@@ -84,7 +85,7 @@ export default function Home() {
             priority
           />
 
-        </a>
+        </Link>
         <Navigation />
       </header>
 
@@ -149,6 +150,9 @@ export default function Home() {
                 src="/the-melwick-brand-story.png"
                 alt="Premium clothing fabric texture"
                 fill
+                loading="lazy"
+                quality={80}
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
               />
             </div>
@@ -244,9 +248,9 @@ export default function Home() {
       <footer className="bg-[#1a3c34] text-[#fdfbf7] py-16 px-6 md:px-12 border-t border-[#fdfbf7]/10" id="site-footer">
         <div className="max-w-7xl mx-auto flex flex-col items-center justify-center gap-8">
           <div className="flex gap-8 text-sm font-medium tracking-widest uppercase text-[#fdfbf7]/70">
-            <a href="/about" className="hover:text-[#c4a977] transition-colors">About</a>
-            <a href="/contact" className="hover:text-[#c4a977] transition-colors">Contact</a>
-            <a href="/privacy-policy" className="hover:text-[#c4a977] transition-colors">Privacy</a>
+            <Link href="/about" className="hover:text-[#c4a977] transition-colors" prefetch={true}>About</Link>
+            <Link href="/contact" className="hover:text-[#c4a977] transition-colors" prefetch={true}>Contact</Link>
+            <Link href="/privacy-policy" className="hover:text-[#c4a977] transition-colors" prefetch={true}>Privacy</Link>
           </div>
         </div>
         

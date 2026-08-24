@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, type FormEvent } from "react";
+import { getTrackingIds } from "./ActivityTracker";
 
 function isValidEmail(email: string): boolean {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -33,12 +34,20 @@ export default function EmailSignup() {
     setMessage("");
 
     try {
+      // Get tracking identifiers so the server can associate this email
+      // with the visitor's activity session/device
+      const { deviceId, sessionId } = getTrackingIds();
+
       const response = await fetch('/api/subscribe', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: email.trim() }),
+        body: JSON.stringify({
+          email: email.trim(),
+          deviceId,
+          sessionId,
+        }),
       });
 
       if (!response.ok) {
@@ -47,7 +56,7 @@ export default function EmailSignup() {
 
       setStatus("success");
       setMessage("You're on the list! We'll be in touch soon.");
-    } catch (error) {
+    } catch {
       setStatus("error");
       setMessage("An error occurred. Please try again later.");
     }
