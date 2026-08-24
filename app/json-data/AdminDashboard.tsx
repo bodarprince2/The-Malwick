@@ -63,8 +63,6 @@ const EMPTY_FILTERS: Filters = {
   deviceType: "",
 };
 
-const PAGE_SIZE = 50;
-
 /* ─────────────────── Helpers ─────────────────── */
 
 function formatDate(iso: string) {
@@ -300,6 +298,7 @@ export default function AdminDashboard({ emails, activities }: AdminDashboardPro
   const [filters, setFilters] = useState<Filters>(EMPTY_FILTERS);
   const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(50);
   const [detail, setDetail] = useState<DetailTarget | null>(null);
   const [showFilters, setShowFilters] = useState(false);
 
@@ -405,10 +404,10 @@ export default function AdminDashboard({ emails, activities }: AdminDashboardPro
   }, [activities, filters, sortOrder]);
 
   // Pagination
-  const totalPages = Math.max(1, Math.ceil(filteredActivities.length / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(filteredActivities.length / pageSize));
   const paginatedActivities = filteredActivities.slice(
-    (currentPage - 1) * PAGE_SIZE,
-    currentPage * PAGE_SIZE
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
   );
 
   const hasActiveFilters = Object.values(filters).some((v) => v !== "");
@@ -430,6 +429,11 @@ export default function AdminDashboard({ emails, activities }: AdminDashboardPro
 
   // Sorted emails (newest first)
   const sortedEmails = useMemo(() => [...emails].reverse(), [emails]);
+  const totalEmailPages = Math.max(1, Math.ceil(sortedEmails.length / pageSize));
+  const paginatedEmails = sortedEmails.slice(
+    (currentPage - 1) * pageSize,
+    currentPage * pageSize
+  );
 
   return (
     <div className="min-h-screen bg-[#fdfbf7] p-4 md:p-8 lg:p-16 text-[#1a3c34]">
@@ -443,7 +447,7 @@ export default function AdminDashboard({ emails, activities }: AdminDashboardPro
         {/* Tabs */}
         <div className="flex items-center gap-1 mb-8 bg-[#f6f3eb] rounded-lg p-1 w-fit">
           <button
-            onClick={() => { setTab("waitlist"); setDetail(null); }}
+            onClick={() => { setTab("waitlist"); setDetail(null); setCurrentPage(1); }}
             className={`px-5 py-2.5 text-xs font-semibold tracking-widest uppercase rounded-md transition-all ${
               tab === "waitlist"
                 ? "bg-[#1a3c34] text-[#fdfbf7] shadow-sm"
@@ -456,7 +460,7 @@ export default function AdminDashboard({ emails, activities }: AdminDashboardPro
             }`}>{emails.length}</span>
           </button>
           <button
-            onClick={() => { setTab("activity"); setDetail(null); }}
+            onClick={() => { setTab("activity"); setDetail(null); setCurrentPage(1); }}
             className={`px-5 py-2.5 text-xs font-semibold tracking-widest uppercase rounded-md transition-all ${
               tab === "activity"
                 ? "bg-[#1a3c34] text-[#fdfbf7] shadow-sm"
@@ -493,9 +497,9 @@ export default function AdminDashboard({ emails, activities }: AdminDashboardPro
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-[#1a3c34]/5">
-                      {sortedEmails.map((entry) => (
-                        <tr key={entry.id} className="hover:bg-[#fdfbf7]/50 transition-colors">
-                          <td className="p-4 text-xs font-mono text-[#8a948f] w-32 truncate">{typeof entry.id === 'string' ? entry.id.split("-")[0] + "…" : entry.id}</td>
+                      {paginatedEmails.map((entry, index) => (
+                        <tr key={entry.email + entry.timestamp} className="hover:bg-[#fdfbf7]/50 transition-colors">
+                          <td className="p-4 text-xs font-mono text-[#8a948f] w-32 truncate">{sortedEmails.length - ((currentPage - 1) * pageSize + index)}</td>
                           <td className="p-4 font-medium text-[#1a3c34]">{entry.email}</td>
                           <td className="p-4 text-sm font-mono text-[#4a5c54]">{entry.ip || "—"}</td>
                           <td className="p-4 text-sm text-[#4a5c54]">{formatDate(entry.timestamp)}</td>
@@ -504,6 +508,45 @@ export default function AdminDashboard({ emails, activities }: AdminDashboardPro
                     </tbody>
                   </table>
                 </div>
+
+                {/* Pagination */}
+                {sortedEmails.length > 50 && (
+                  <div className="flex items-center justify-between px-4 py-3 border-t border-[#1a3c34]/10 bg-[#f6f3eb]/50">
+                    <div className="flex items-center gap-3">
+                      <p className="text-xs text-[#8a948f]">
+                        Page {currentPage} of {totalEmailPages}
+                      </p>
+                      <select
+                        value={pageSize}
+                        onChange={(e) => {
+                          setPageSize(Number(e.target.value));
+                          setCurrentPage(1);
+                        }}
+                        className="text-xs bg-white border border-[#1a3c34]/15 rounded px-2 py-1 outline-none text-[#4a5c54]"
+                      >
+                        <option value={50}>50 / page</option>
+                        <option value={75}>75 / page</option>
+                        <option value={100}>100 / page</option>
+                      </select>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                        disabled={currentPage === 1}
+                        className="px-3 py-1.5 text-xs font-semibold tracking-wider uppercase bg-white border border-[#1a3c34]/15 rounded hover:border-[#1a3c34] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                      >
+                        Prev
+                      </button>
+                      <button
+                        onClick={() => setCurrentPage((p) => Math.min(totalEmailPages, p + 1))}
+                        disabled={currentPage === totalEmailPages}
+                        className="px-3 py-1.5 text-xs font-semibold tracking-wider uppercase bg-white border border-[#1a3c34]/15 rounded hover:border-[#1a3c34] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                      >
+                        Next
+                      </button>
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -682,11 +725,25 @@ export default function AdminDashboard({ emails, activities }: AdminDashboardPro
                 </div>
 
                 {/* Pagination */}
-                {totalPages > 1 && (
+                {filteredActivities.length > 50 && (
                   <div className="flex items-center justify-between px-4 py-3 border-t border-[#1a3c34]/10 bg-[#f6f3eb]/50">
-                    <p className="text-xs text-[#8a948f]">
-                      Page {currentPage} of {totalPages}
-                    </p>
+                    <div className="flex items-center gap-3">
+                      <p className="text-xs text-[#8a948f]">
+                        Page {currentPage} of {totalPages}
+                      </p>
+                      <select
+                        value={pageSize}
+                        onChange={(e) => {
+                          setPageSize(Number(e.target.value));
+                          setCurrentPage(1);
+                        }}
+                        className="text-xs bg-white border border-[#1a3c34]/15 rounded px-2 py-1 outline-none text-[#4a5c54]"
+                      >
+                        <option value={50}>50 / page</option>
+                        <option value={75}>75 / page</option>
+                        <option value={100}>100 / page</option>
+                      </select>
+                    </div>
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
