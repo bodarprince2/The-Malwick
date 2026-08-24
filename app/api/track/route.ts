@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { kv } from '@vercel/kv';
+import clientPromise from '@/app/lib/mongodb';
 import { parseUserAgent } from '@/app/lib/parseUserAgent';
 
 // In-memory dedup using HashMap - O(1) lookup
@@ -42,11 +42,10 @@ export async function POST(request: Request) {
     const uaString = request.headers.get('user-agent') || clientUA || '';
     const { browser, os, deviceType } = parseUserAgent(uaString);
 
-    // Increment activity ID counter in KV
-    const activityId = await kv.incr('activity_id_counter');
+    const client = await clientPromise;
+    const db = client.db();
 
     const activity = {
-      activityId,
       timestamp: new Date().toISOString(),
       eventType,
       page,
@@ -61,8 +60,8 @@ export async function POST(request: Request) {
       referrer: referrer || null,
     };
 
-    // Push the activity to KV list
-    await kv.rpush('activity_list', activity);
+    // Insert the activity into MongoDB
+    await db.collection('activities').insertOne(activity);
 
     return NextResponse.json({ success: true });
   } catch (error) {

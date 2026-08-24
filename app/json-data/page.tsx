@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { kv } from '@vercel/kv';
+import clientPromise from '@/app/lib/mongodb';
 import AdminDashboard from './AdminDashboard';
 
 export const metadata: Metadata = {
@@ -21,18 +21,27 @@ export default async function JsonDataPage() {
   let error: string | null = null;
 
   try {
-    emails = await kv.lrange('emails_list', 0, -1) || [];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const client = await clientPromise;
+    const db = client.db();
+
+    // Fetch and natively sort by timestamp (newest first)
+    const rawEmails = await db.collection('emails').find().sort({ timestamp: -1 }).toArray();
+    emails = rawEmails.map(doc => ({ ...doc, _id: doc._id.toString() }));
+
   } catch (e: any) {
-    error = "Could not read emails data from database. Ensure KV_REST_API_URL and KV_REST_API_TOKEN are set.";
+    error = "Could not read emails data from MongoDB. Ensure MONGO_URI is set.";
     console.error(e);
   }
 
   try {
-    activities = await kv.lrange('activity_list', 0, -1) || [];
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (!error) {
+      const client = await clientPromise;
+      const db = client.db();
+      const rawActivities = await db.collection('activities').find().sort({ timestamp: -1 }).toArray();
+      activities = rawActivities.map(doc => ({ ...doc, _id: doc._id.toString() }));
+    }
   } catch (e: any) {
-    if (!error) error = "Could not read activity data from database.";
+    if (!error) error = "Could not read activity data from MongoDB.";
     console.error(e);
   }
 

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { kv } from '@vercel/kv';
+import clientPromise from '@/app/lib/mongodb';
 import { parseUserAgent } from '@/app/lib/parseUserAgent';
 
 export async function POST(request: Request) {
@@ -19,28 +19,25 @@ export async function POST(request: Request) {
       ? forwarded.split(',')[0].trim()
       : request.headers.get('x-real-ip') || 'unknown';
 
-    // Generate a sequential numeric ID using KV
-    const newId = await kv.incr('emails_id_counter');
+    const client = await clientPromise;
+    const db = client.db();
 
     // Add new email with timestamp and IP address
     const newEntry = {
-      id: newId,
       email,
       ip,
       timestamp: new Date().toISOString()
     };
     
-    // Write to KV securely
-    await kv.rpush('emails_list', newEntry);
+    // Write to MongoDB
+    await db.collection('emails').insertOne(newEntry);
 
     // Also record an email_submitted activity event
     if (deviceId && sessionId) {
       const uaString = request.headers.get('user-agent') || '';
       const { browser, os, deviceType } = parseUserAgent(uaString);
 
-      const activityId = await kv.incr('activity_id_counter');
       const activity = {
-        activityId,
         timestamp: new Date().toISOString(),
         eventType: 'email_submitted',
         page: '/signup',
@@ -55,7 +52,7 @@ export async function POST(request: Request) {
         referrer: null,
       };
 
-      await kv.rpush('activity_list', activity);
+      await db.collection('activities').insertOne(activity);
     }
 
     return NextResponse.json(
