@@ -1,6 +1,5 @@
 import { Metadata } from 'next';
-import fs from 'fs/promises';
-import path from 'path';
+import { kv } from '@vercel/kv';
 import AdminDashboard from './AdminDashboard';
 
 export const metadata: Metadata = {
@@ -22,27 +21,19 @@ export default async function JsonDataPage() {
   let error: string | null = null;
 
   try {
-    const emailsPath = path.join(process.cwd(), 'data', 'emails.json');
-    const emailsData = await fs.readFile(emailsPath, 'utf-8');
-    emails = JSON.parse(emailsData);
+    emails = await kv.lrange('emails_list', 0, -1) || [];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
-    if (e.code !== 'ENOENT') {
-      error = "Could not read emails data file.";
-      console.error(e);
-    }
+    error = "Could not read emails data from database. Ensure KV_REST_API_URL and KV_REST_API_TOKEN are set.";
+    console.error(e);
   }
 
   try {
-    const activityPath = path.join(process.cwd(), 'data', 'activity.json');
-    const activityData = await fs.readFile(activityPath, 'utf-8');
-    activities = JSON.parse(activityData);
+    activities = await kv.lrange('activity_list', 0, -1) || [];
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (e: any) {
-    if (e.code !== 'ENOENT') {
-      if (!error) error = "Could not read activity data file.";
-      console.error(e);
-    }
+    if (!error) error = "Could not read activity data from database.";
+    console.error(e);
   }
 
   if (error) {
