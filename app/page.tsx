@@ -41,6 +41,14 @@ const jsonLd = {
       "description": "Premium clothing brand redefining everyday style. Discover our modern heritage apparel and luxury streetwear.",
       "publisher": {
         "@id": "https://themelwick.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://themelwick.com/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
       }
     }
   ]

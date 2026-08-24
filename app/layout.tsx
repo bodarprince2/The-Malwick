@@ -107,8 +107,26 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "The Melwick",
+    "url": "https://themelwick.com",
+    "logo": "https://themelwick.com/the-melwick-logo.png",
+    "sameAs": [
+      "https://instagram.com/themelwick",
+      "https://facebook.com/themelwick"
+    ]
+  };
+
   return (
     <html lang="en" className={`${cormorant.variable} ${inter.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body>
         <ActivityTracker />
         {children}
