@@ -88,3 +88,21 @@ body {
   opacity: 1;
   transform: translateY(0);
 }
+
+/* Loader fill animation for the page loader bar */
+@keyframes loaderFill {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+/* 3D Showcase — scroll-mouse bounce indicator */
+@keyframes scrollBounce {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  50% { transform: translateY(4px); opacity: 1; }
+}
+
+/* Override default bounce with a gentler one for the scroll indicator */
+#product-showcase-3d .animate-bounce {
+  animation: scrollBounce 1.8s ease-in-out infinite;
+}
+

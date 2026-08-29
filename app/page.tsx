@@ -5,14 +5,16 @@ import EmailSignup from "./components/EmailSignup";
 import HeroBackground from "./components/HeroBackground";
 import ScrollEffects from "./components/ScrollEffects";
 import Navigation from "./components/Navigation";
+import HeroCarousel from "./components/HeroCarousel";
+import ProductShowcase3D from "./components/ProductShowcase3D";
 import {
   InstagramIcon,
   FacebookIcon,
   XTwitterIcon,
 } from "./components/SocialIcons";
 
-// Launch date — set to Jan 1, 2027
-const LAUNCH_DATE = "2027-01-01T00:00:00";
+// Launch date — set to Dec 1, 2026
+const LAUNCH_DATE = "2026-12-01T00:00:00";
 
 const jsonLd = {
   "@context": "https://schema.org",
@@ -86,50 +88,57 @@ export default function Home() {
 
       <main>
         {/* ── Hero Section ── */}
-        <section className="relative min-h-[100svh] flex flex-col items-center justify-center text-center px-6 pt-24 pb-16 overflow-hidden" id="hero" aria-labelledby="hero-title">
+        <section className="relative min-h-[100svh] flex flex-col lg:flex-row items-center justify-between px-6 md:px-12 pt-28 pb-16 lg:py-0 overflow-hidden" id="hero" aria-labelledby="hero-title">
           <HeroBackground />
 
-          <div className="relative z-10 flex flex-col items-center max-w-4xl mx-auto w-full">
+          {/* Left Column: Content */}
+          <div className="relative z-10 flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:w-[40%] xl:w-[45%] max-w-2xl mx-auto lg:mx-0 lg:pl-12 xl:pl-24 mb-12 lg:mb-0">
             {/* Eyebrow text */}
-            <p className="flex items-center gap-4 text-xs font-medium tracking-[0.2em] uppercase text-[#1a1a1a] mb-8 animate-fade-in delay-200" aria-hidden="true">
-              <span className="w-8 h-[1px] bg-[#1a1a1a]/30" />
-              Coming Soon
-              <span className="w-8 h-[1px] bg-[#1a1a1a]/30" />
+            <p className="flex items-center justify-center lg:justify-start gap-4 text-[0.65rem] md:text-xs font-semibold tracking-[0.2em] uppercase text-[#1a1a1a] mb-4 md:mb-6 animate-fade-in delay-200" aria-hidden="true">
+              <span className="hidden lg:block w-8 h-[1px] bg-[#1a1a1a]/30" />
+              Premium Streetwear
             </p>
 
-            {/* Brand Name — pure typography, no logo image */}
-            <h1 className="font-display flex flex-col items-center leading-none text-[#1a1a1a] animate-fade-in-up delay-400 mb-6" id="hero-title">
-              <span className="text-3xl md:text-5xl lg:text-6xl italic font-light tracking-wide mb-2 opacity-80">The</span>
-              <span className="text-6xl md:text-8xl lg:text-9xl font-semibold tracking-[0.05em] uppercase">Melwick</span>
+            {/* Brand Name */}
+            <h1 className="font-display flex flex-col items-center lg:items-start leading-none text-[#1a1a1a] animate-fade-in-up delay-400 mb-6 md:mb-8" id="hero-title">
+              <span className="text-4xl md:text-5xl italic font-light tracking-wide mb-1 md:mb-2 opacity-80 text-[#b8976a]">The</span>
+              <span className="text-5xl md:text-7xl xl:text-8xl font-semibold tracking-[0.05em] uppercase">Melwick</span>
             </h1>
 
             {/* Tagline */}
-            <p className="font-display text-xl md:text-2xl lg:text-3xl italic text-[#5a5a5a] animate-fade-in-up delay-600 mb-12">
-              Premium Streetwear Redefining Everyday Style
+            <p className="text-sm md:text-base lg:text-lg text-[#5a5a5a] animate-fade-in-up delay-500 mb-10 max-w-md">
+              Redefining Everyday Style.<br />
+              Crafted for Timeless Confidence.
             </p>
 
-            {/* Decorative divider */}
-            <div className="flex justify-center mb-16 animate-fade-in delay-700" aria-hidden="true">
-              <span className="w-2 h-2 rotate-45 bg-[#b8976a]" />
-            </div>
-
-            {/* Countdown */}
-            <div className="animate-fade-in-up delay-800 mb-16 flex flex-col items-center">
-              <p className="text-[0.65rem] font-semibold tracking-[0.2em] uppercase text-[#5a5a5a] mb-6">Launching In</p>
-              <Countdown targetDate={LAUNCH_DATE} />
+            {/* Launch Date */}
+            <div className="animate-fade-in-up delay-600 mb-8 flex flex-col items-center lg:items-start w-full">
+              <p className="text-[0.65rem] md:text-xs font-semibold tracking-[0.2em] uppercase text-[#1a1a1a] mb-2">Launching On</p>
+              <p className="font-display text-2xl md:text-3xl text-[#b8976a] mb-6 uppercase tracking-widest">1st December</p>
+              <div className="w-full max-w-xs md:max-w-sm lg:max-w-none border-t border-[#1a1a1a]/10 pt-6">
+                <Countdown targetDate={LAUNCH_DATE} />
+              </div>
             </div>
 
             {/* CTA Button in hero */}
-            <div className="animate-fade-in-up delay-1000">
-              <a href="#signup-section" className="inline-flex items-center gap-3 bg-[#1a1a1a] text-[#f8f6f2] px-8 py-4 text-sm font-semibold tracking-widest uppercase rounded shadow-sm hover:bg-[#2d2d2d] transition-colors border border-[#1a1a1a]">
+            <div className="animate-fade-in-up delay-800 w-full lg:w-auto mt-2">
+              <a href="#signup-section" className="w-full lg:w-auto inline-flex items-center justify-center gap-3 bg-[#1a1a1a] text-[#f8f6f2] px-8 py-4 text-sm font-semibold tracking-widest uppercase rounded shadow hover:bg-[#2d2d2d] hover:shadow-lg transition-all border border-[#1a1a1a] min-h-[44px]">
                 <span>Join The Waitlist</span>
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
                   <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </a>
             </div>
           </div>
+
+          {/* Right Column: Carousel */}
+          <div className="relative z-10 w-full lg:w-[60%] xl:w-[55%] animate-fade-in delay-1000 mt-8 lg:mt-0">
+            <HeroCarousel />
+          </div>
         </section>
+
+        {/* ── 3D Product Showcase ── */}
+        <ProductShowcase3D />
 
         {/* ── Brand Story Section ── */}
         <section

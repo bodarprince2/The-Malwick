@@ -32,6 +32,7 @@ function padTwo(n: number): string {
 export default function Countdown({ targetDate }: { targetDate: string }) {
   const [mounted, setMounted] = useState(false);
   const [time, setTime] = useState<TimeLeft>(ZERO);
+  const [isExpired, setIsExpired] = useState(false);
   const [changing, setChanging] = useState<Record<string, boolean>>({});
 
   const target = new Date(targetDate);
@@ -40,13 +41,22 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
-    setTime(getTimeLeft(target));
+    const initialTime = getTimeLeft(target);
+    setTime(initialTime);
+    if (initialTime === ZERO) {
+      setIsExpired(true);
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const tick = useCallback(() => {
     setTime((prev) => {
       const next = getTimeLeft(target);
+
+      if (next === ZERO) {
+        setIsExpired(true);
+        return next;
+      }
 
       const newChanging: Record<string, boolean> = {};
       if (prev.days !== next.days) newChanging.days = true;
@@ -62,34 +72,44 @@ export default function Countdown({ targetDate }: { targetDate: string }) {
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
+    if (!mounted || isExpired) return;
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
-  }, [mounted, tick]);
+  }, [mounted, isExpired, tick]);
 
   const units: { key: keyof TimeLeft; label: string }[] = [
     { key: "days", label: "Days" },
     { key: "hours", label: "Hours" },
-    { key: "minutes", label: "Minutes" },
-    { key: "seconds", label: "Seconds" },
+    { key: "minutes", label: "Mins" },
+    { key: "seconds", label: "Secs" },
   ];
 
+  if (isExpired && mounted) {
+    return (
+      <div className="flex items-center justify-center text-[#1a1a1a] py-4" role="status" aria-label="We are live">
+        <span className="font-display text-2xl md:text-3xl font-medium tracking-widest uppercase">
+          We Are Live
+        </span>
+      </div>
+    );
+  }
+
   return (
-    <div className="flex items-center gap-4 text-[#1a1a1a] justify-center" role="timer" aria-label="Countdown to launch">
+    <div className="flex items-center gap-2 md:gap-4 text-[#1a1a1a] justify-center" role="timer" aria-label="Countdown to launch">
       {units.map((unit, i) => (
         <div key={unit.key} style={{ display: "contents" }}>
           {i > 0 && (
-            <span className="text-2xl font-light opacity-50 pb-4" aria-hidden="true">
+            <span className="text-xl md:text-2xl font-light opacity-50 pb-4 md:pb-5" aria-hidden="true">
               :
             </span>
           )}
           <div className="flex flex-col items-center">
-            <div className="font-display text-4xl md:text-5xl font-medium tracking-wide w-14 md:w-16 text-center text-[#1a1a1a]" aria-label={`${time[unit.key]} ${unit.label}`}>
+            <div className="font-display text-3xl md:text-5xl font-medium tracking-wide w-12 md:w-16 text-center text-[#1a1a1a]" aria-label={`${time[unit.key]} ${unit.label}`}>
               <span className={`inline-block transition-transform duration-300 ${changing[unit.key] ? "scale-90 opacity-70" : "scale-100 opacity-100"}`}>
                 {mounted ? padTwo(time[unit.key]) : "--"}
               </span>
             </div>
-            <span className="text-[0.55rem] font-medium tracking-widest uppercase mt-2 text-[#5a5a5a]">{unit.label}</span>
+            <span className="text-[0.5rem] md:text-[0.55rem] font-medium tracking-widest uppercase mt-1 md:mt-2 text-[#5a5a5a]">{unit.label}</span>
           </div>
         </div>
       ))}

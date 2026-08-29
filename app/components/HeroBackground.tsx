@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const slides = [
-  { src: "/the-melwick-mens-black-premium-tee.png", alt: "Premium oversized black heavyweight cotton t-shirt" },
-  { src: "/the-melwick-mens-cream-premium-tee.png", alt: "Premium oversized cream heavyweight cotton t-shirt" },
-  { src: "/the-melwick-mens-charcoal-premium-tee.png", alt: "Premium oversized charcoal heavyweight cotton t-shirt" },
+  { src: "/the-melwick-mens-black-premium-tee.png", alt: "Premium oversized black heavyweight cotton T-shirt" },
+  { src: "/cream_tee.png", alt: "Premium oversized cream heavyweight cotton T-shirt" },
+  { src: "/the-melwick-mens-charcoal-premium-tee.png", alt: "Premium oversized charcoal heavyweight cotton T-shirt" },
 ];
 
 export default function HeroBackground() {
