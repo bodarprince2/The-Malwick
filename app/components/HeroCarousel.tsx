@@ -134,7 +134,7 @@ export default function HeroCarousel() {
             role="tab"
             aria-selected={i === activeIndex}
             aria-label={`Go to slide ${i + 1}`}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${i === activeIndex ? "bg-[#1a1a1a] w-5" : "bg-[#1a1a1a]/30 hover:bg-[#1a1a1a]/50"
+            className={`box-content bg-clip-content p-2 h-2 rounded-full transition-all duration-300 ${i === activeIndex ? "bg-[#1a1a1a] w-5" : "bg-[#1a1a1a]/30 hover:bg-[#1a1a1a]/50 w-2"
               }`}
           />
         ))}

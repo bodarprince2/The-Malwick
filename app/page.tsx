@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import Countdown from "./components/Countdown";
-import EmailSignup from "./components/EmailSignup";
 import ScrollEffects from "./components/ScrollEffects";
 import Navigation from "./components/Navigation";
 import HeroCarousel from "./components/HeroCarousel";
-import FeaturedProduct from "./components/FeaturedProduct";
+import dynamic from "next/dynamic";
+
+const Countdown = dynamic(() => import("./components/Countdown"));
+const EmailSignup = dynamic(() => import("./components/EmailSignup"));
+const FeaturedProduct = dynamic(() => import("./components/FeaturedProduct"));
 import {
   InstagramIcon,
   FacebookIcon,
@@ -89,7 +91,7 @@ export default function Home() {
 
             {/* Brand Name */}
             <h1 className="font-display flex flex-col items-center lg:items-start leading-none text-[#1a1a1a] animate-fade-in-up delay-400 mb-6 md:mb-8" id="hero-title">
-              <span className="text-4xl md:text-5xl italic font-light tracking-wide mb-1 md:mb-2 opacity-80 text-[#b8976a]">The</span>
+              <span className="text-4xl md:text-5xl italic font-light tracking-wide mb-1 md:mb-2 text-[#8b6d45]">The</span>
               <span className="text-5xl md:text-7xl xl:text-8xl font-semibold tracking-[0.05em] uppercase">Melwick</span>
             </h1>
 
@@ -102,7 +104,7 @@ export default function Home() {
             {/* Launch Date */}
             <div className="animate-fade-in-up delay-600 mb-8 flex flex-col items-center lg:items-start w-full">
               <p className="text-[0.65rem] md:text-xs font-semibold tracking-[0.2em] uppercase text-[#1a1a1a] mb-2">Launching On</p>
-              <p className="font-display text-2xl md:text-3xl text-[#b8976a] mb-6 uppercase tracking-widest">1st December</p>
+              <p className="font-display text-2xl md:text-3xl text-[#8b6d45] mb-6 uppercase tracking-widest">1st December</p>
               <div className="w-full max-w-xs md:max-w-sm lg:max-w-none border-t border-[#1a1a1a]/10 pt-6">
                 <Countdown targetDate={LAUNCH_DATE} />
               </div>
