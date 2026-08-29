@@ -2,11 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import Countdown from "./components/Countdown";
 import EmailSignup from "./components/EmailSignup";
-import HeroBackground from "./components/HeroBackground";
 import ScrollEffects from "./components/ScrollEffects";
 import Navigation from "./components/Navigation";
 import HeroCarousel from "./components/HeroCarousel";
-import ProductShowcase3D from "./components/ProductShowcase3D";
+import FeaturedProduct from "./components/FeaturedProduct";
 import {
   InstagramIcon,
   FacebookIcon,
@@ -89,8 +88,6 @@ export default function Home() {
       <main>
         {/* ── Hero Section ── */}
         <section className="relative min-h-[100svh] flex flex-col lg:flex-row items-center justify-between px-6 md:px-12 pt-28 pb-16 lg:py-0 overflow-hidden" id="hero" aria-labelledby="hero-title">
-          <HeroBackground />
-
           {/* Left Column: Content */}
           <div className="relative z-10 flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:w-[40%] xl:w-[45%] max-w-2xl mx-auto lg:mx-0 lg:pl-12 xl:pl-24 mb-12 lg:mb-0">
             {/* Eyebrow text */}
@@ -137,8 +134,8 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── 3D Product Showcase ── */}
-        <ProductShowcase3D />
+        {/* ── Featured Product ── */}
+        <FeaturedProduct />
 
         {/* ── Brand Story Section ── */}
         <section

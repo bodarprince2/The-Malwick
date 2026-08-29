@@ -6,33 +6,18 @@ import Image from "next/image";
 const products = [
   {
     id: 0,
-    src: "/sage_green_tee.png",
-    alt: "The Melwick premium sage green oversized heavyweight T-shirt",
+    src: "/tee-black-front.png",
+    alt: "The Melwick premium black oversized heavyweight T-shirt",
   },
   {
     id: 1,
-    src: "/cream_tee.png",
+    src: "/tee-cream-front.png",
     alt: "The Melwick premium cream oversized heavyweight T-shirt",
   },
   {
     id: 2,
-    src: "/sand_tee.png",
+    src: "/tee-sand-front.png",
     alt: "The Melwick premium sand oversized heavyweight T-shirt",
-  },
-  {
-    id: 3,
-    src: "/the-melwick-mens-black-premium-tee.png",
-    alt: "The Melwick premium black oversized heavyweight T-shirt",
-  },
-  {
-    id: 4,
-    src: "/the-melwick-mens-charcoal-premium-tee.png",
-    alt: "The Melwick premium charcoal oversized heavyweight T-shirt",
-  },
-  {
-    id: 5,
-    src: "/the-melwick-mens-cream-premium-tee.png",
-    alt: "The Melwick premium ivory cream oversized heavyweight T-shirt",
   },
 ];
 
@@ -81,22 +66,22 @@ export default function HeroCarousel() {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       aria-roledescription="carousel"
-      aria-label="Premium T-shirts"
+      aria-label="Premium T-shirt collection"
     >
       <div className="relative w-full h-full flex items-center justify-center">
         {products.map((product, i) => {
           const offset = (i - activeIndex + products.length) % products.length;
-          
-          let positionClasses = "";
-          let zIndex = 10;
-          
+
+          let positionClasses = "opacity-0 scale-[0.8] pointer-events-none";
+          let zIndex = 0;
+
           if (offset === 0) {
             positionClasses = "translate-x-0 scale-100 opacity-100";
             zIndex = 20;
           } else if (offset === 1) {
             positionClasses = "translate-x-[25%] md:translate-x-[35%] scale-[0.85] opacity-60";
             zIndex = 10;
-          } else if (offset === 2) {
+          } else if (offset === products.length - 1) {
             positionClasses = "-translate-x-[25%] md:-translate-x-[35%] scale-[0.85] opacity-60";
             zIndex = 10;
           }
@@ -129,7 +114,7 @@ export default function HeroCarousel() {
         className="absolute left-0 md:-left-6 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-md rounded-full shadow flex items-center justify-center text-[#1a1a1a] opacity-0 group-hover:opacity-100 transition-opacity focus:opacity-100 z-30 disabled:opacity-50"
         aria-label="Previous product"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m15 18-6-6 6-6" /></svg>
       </button>
 
       <button
@@ -137,7 +122,7 @@ export default function HeroCarousel() {
         className="absolute right-0 md:-right-6 top-1/2 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white/90 backdrop-blur-md rounded-full shadow flex items-center justify-center text-[#1a1a1a] opacity-0 group-hover:opacity-100 transition-opacity focus:opacity-100 z-30 disabled:opacity-50"
         aria-label="Next product"
       >
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
       </button>
 
       {/* Pagination */}
@@ -149,9 +134,8 @@ export default function HeroCarousel() {
             role="tab"
             aria-selected={i === activeIndex}
             aria-label={`Go to slide ${i + 1}`}
-            className={`w-2 h-2 rounded-full transition-all duration-300 ${
-              i === activeIndex ? "bg-[#1a1a1a] w-5" : "bg-[#1a1a1a]/30 hover:bg-[#1a1a1a]/50"
-            }`}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${i === activeIndex ? "bg-[#1a1a1a] w-5" : "bg-[#1a1a1a]/30 hover:bg-[#1a1a1a]/50"
+              }`}
           />
         ))}
       </div>

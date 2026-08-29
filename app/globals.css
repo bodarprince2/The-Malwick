@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand Colors — redesigned to complement the dark flowing M logo */
+  /* Brand Colors — warm neutrals with refined gold accents */
   --color-brand-dark: #1a1a1a;
   --color-brand-dark-soft: #2d2d2d;
   --color-brand-champagne: #e8dcc4;
@@ -106,3 +106,8 @@ body {
   animation: scrollBounce 1.8s ease-in-out infinite;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  #product-showcase-3d .animate-bounce {
+    animation: none;
+  }
+}
