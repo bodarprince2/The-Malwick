@@ -54,9 +54,7 @@ export const metadata: Metadata = {
     address: false,
     telephone: false,
   },
-  alternates: {
-    canonical: "/",
-  },
+  manifest: "/site.webmanifest",
   openGraph: {
     title: "The Melwick | Premium Streetwear & Modern Heritage Apparel",
     description:
@@ -112,12 +110,15 @@ export default function RootLayout({
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
+    "@id": "https://themelwick.com/#organization",
     "name": "The Melwick",
+    "alternateName": ["Melwick", "Malwick", "The Malwick", "Mel", "Male"],
     "url": "https://themelwick.com",
     "logo": "https://themelwick.com/logo.png",
     "sameAs": [
-      "https://instagram.com/themelwick",
-      "https://facebook.com/themelwick"
+      "https://www.instagram.com/themelwick/",
+      "https://www.facebook.com/themelwick/",
+      "https://x.com"
     ]
   };
 

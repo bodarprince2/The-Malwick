@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import Countdown from "./components/Countdown";
@@ -15,40 +16,30 @@ import {
 // Launch date — set to Dec 1, 2026
 const LAUNCH_DATE = "2026-12-01T00:00:00";
 
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "/",
+  },
+};
+
 const jsonLd = {
   "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "Organization",
-      "@id": "https://themelwick.com/#organization",
-      "name": "The Melwick",
-      "alternateName": ["Melwick", "Malwick", "The Malwick", "Mel", "Male"],
-      "url": "https://themelwick.com",
-      "sameAs": [
-        "https://www.instagram.com/themelwick/",
-        "https://www.facebook.com/themelwick/",
-        "https://x.com"
-      ]
+  "@type": "WebSite",
+  "@id": "https://themelwick.com/#website",
+  "url": "https://themelwick.com",
+  "name": "The Melwick",
+  "description": "Premium clothing brand redefining everyday style. Discover our modern heritage apparel and luxury streetwear.",
+  "publisher": {
+    "@id": "https://themelwick.com/#organization"
+  },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://themelwick.com/search?q={search_term_string}"
     },
-    {
-      "@type": "WebSite",
-      "@id": "https://themelwick.com/#website",
-      "url": "https://themelwick.com",
-      "name": "The Melwick",
-      "description": "Premium clothing brand redefining everyday style. Discover our modern heritage apparel and luxury streetwear.",
-      "publisher": {
-        "@id": "https://themelwick.com/#organization"
-      },
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": {
-          "@type": "EntryPoint",
-          "urlTemplate": "https://themelwick.com/search?q={search_term_string}"
-        },
-        "query-input": "required name=search_term_string"
-      }
-    }
-  ]
+    "query-input": "required name=search_term_string"
+  }
 };
 
 export default function Home() {
