@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import Navigation from "../components/Navigation";
 import type { Metadata } from "next";
@@ -20,9 +21,14 @@ export default function PrivacyPolicy() {
       {/* ── Header ── */}
       <header className="w-full px-6 py-6 md:px-12 flex items-center justify-between border-b border-[#1a1a1a]/10 bg-[#f8f6f2]">
         <Link href="/" className="flex items-center gap-3 no-underline text-[#1a1a1a]" aria-label="The Melwick — Home">
-          <span className="font-display text-2xl font-bold uppercase tracking-widest">
-            The Melwick
-          </span>
+          <Image
+            src="/logo.png"
+            alt="The Melwick Logo"
+            width={69}
+            height={46}
+            className="h-[46px] w-auto object-contain"
+            priority
+          />
         </Link>
         <Navigation />
       </header>

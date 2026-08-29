@@ -65,6 +65,14 @@ export const metadata: Metadata = {
     siteName: "The Melwick",
     locale: "en_US",
     type: "website",
+    images: [
+      {
+        url: "/logo.png",
+        width: 742,
+        height: 495,
+        alt: "The Melwick Logo",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -72,6 +80,16 @@ export const metadata: Metadata = {
     description:
       "The Melwick is a premium clothing brand redefining everyday style. Discover our modern heritage apparel and luxury streetwear.",
     creator: "@themelwick",
+    images: ["/logo.png"],
+  },
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" }
+    ],
+    shortcut: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
   },
   robots: {
     index: true,
@@ -96,6 +114,7 @@ export default function RootLayout({
     "@type": "Organization",
     "name": "The Melwick",
     "url": "https://themelwick.com",
+    "logo": "https://themelwick.com/logo.png",
     "sameAs": [
       "https://instagram.com/themelwick",
       "https://facebook.com/themelwick"

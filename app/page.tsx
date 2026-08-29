@@ -72,9 +72,14 @@ export default function Home() {
       {/* ── Header ── */}
       <header className="site-header fixed top-0 left-0 right-0 z-[100] px-6 py-6 md:px-12 flex items-center justify-between transition-all duration-500 bg-transparent [&.scrolled]:bg-[#f8f6f2]/95 [&.scrolled]:backdrop-blur-md [&.scrolled]:border-b [&.scrolled]:border-[#1a1a1a]/10 [&.scrolled]:py-4 animate-fade-in" id="site-header">
         <Link href="/" className="flex items-center gap-3 no-underline text-[#1a1a1a]" aria-label="The Melwick — Home">
-          <span className="font-display text-2xl font-bold uppercase tracking-widest">
-            The Melwick
-          </span>
+          <Image
+            src="/logo.png"
+            alt="The Melwick Logo"
+            width={69}
+            height={46}
+            className="h-[46px] w-auto object-contain"
+            priority
+          />
         </Link>
         <Navigation />
       </header>
