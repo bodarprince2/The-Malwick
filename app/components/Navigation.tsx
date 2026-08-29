@@ -34,7 +34,7 @@ export default function Navigation() {
           <Link
             key={link.label}
             href={link.href}
-            className="font-body text-xs font-medium tracking-[0.14em] uppercase text-[#4a5c54] no-underline transition-colors hover:text-[#1a3c34]"
+            className="font-body text-xs font-medium tracking-[0.14em] uppercase text-[#5a5a5a] no-underline transition-colors hover:text-[#1a1a1a]"
           >
             {link.label}
           </Link>
@@ -43,20 +43,20 @@ export default function Navigation() {
 
       {/* Mobile Nav Toggle */}
       <button 
-        className="md:hidden p-2 -mr-2 text-[#1a3c34] focus:outline-none z-[110] relative"
+        className="md:hidden p-2 -mr-2 text-[#1a1a1a] focus:outline-none z-[110] relative"
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Toggle menu"
       >
         <div className="w-6 h-5 flex flex-col justify-between items-end">
-          <span className={`block h-[2px] bg-[#1a3c34] transition-all duration-300 ${isOpen ? 'w-6 rotate-45 translate-y-[9px]' : 'w-6'}`} />
-          <span className={`block h-[2px] bg-[#1a3c34] transition-all duration-300 ${isOpen ? 'w-0 opacity-0' : 'w-5'}`} />
-          <span className={`block h-[2px] bg-[#1a3c34] transition-all duration-300 ${isOpen ? 'w-6 -rotate-45 -translate-y-[9px]' : 'w-4'}`} />
+          <span className={`block h-[2px] bg-[#1a1a1a] transition-all duration-300 ${isOpen ? 'w-6 rotate-45 translate-y-[9px]' : 'w-6'}`} />
+          <span className={`block h-[2px] bg-[#1a1a1a] transition-all duration-300 ${isOpen ? 'w-0 opacity-0' : 'w-5'}`} />
+          <span className={`block h-[2px] bg-[#1a1a1a] transition-all duration-300 ${isOpen ? 'w-6 -rotate-45 -translate-y-[9px]' : 'w-4'}`} />
         </div>
       </button>
 
       {/* Mobile Menu Overlay */}
       <div 
-        className={`fixed inset-0 bg-[#fdfbf7] z-[105] flex flex-col items-center justify-center transition-all duration-500 ease-in-out md:hidden ${
+        className={`fixed inset-0 bg-[#f8f6f2] z-[105] flex flex-col items-center justify-center transition-all duration-500 ease-in-out md:hidden ${
           isOpen ? 'opacity-100 visible' : 'opacity-0 invisible pointer-events-none'
         }`}
       >
@@ -70,7 +70,7 @@ export default function Navigation() {
               <Link
                 href={link.href}
                 onClick={() => setIsOpen(false)}
-                className="font-display text-4xl font-medium tracking-[0.1em] uppercase text-[#1a3c34] no-underline transition-colors hover:text-[#c4a977]"
+                className="font-display text-4xl font-medium tracking-[0.1em] uppercase text-[#1a1a1a] no-underline transition-colors hover:text-[#b8976a]"
               >
                 {link.label}
               </Link>

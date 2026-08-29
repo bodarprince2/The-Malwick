@@ -65,14 +65,14 @@ export default function EmailSignup() {
   if (status === "success") {
     return (
       <div className="flex flex-col items-center justify-center py-8 text-center animate-fade-in" role="status">
-        <svg className="w-12 h-12 text-[#1a3c34] mb-4" viewBox="0 0 52 52" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
+        <svg className="w-12 h-12 text-[#1a1a1a] mb-4" viewBox="0 0 52 52" aria-hidden="true" fill="none" stroke="currentColor" strokeWidth="1.5">
           <circle cx="26" cy="26" r="24" stroke="currentColor" />
           <path d="M14.1 27.2l7.1 7.2 16.7-16.8" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-        <p className="font-display text-2xl font-semibold text-[#1a3c34] mb-2">
+        <p className="font-display text-2xl font-semibold text-[#1a1a1a] mb-2">
           Welcome to The Melwick
         </p>
-        <p className="text-sm text-[#4a5c54] leading-relaxed">
+        <p className="text-sm text-[#5a5a5a] leading-relaxed">
           {message}
         </p>
       </div>
@@ -84,7 +84,7 @@ export default function EmailSignup() {
       <input
         ref={inputRef}
         type="email"
-        className={`flex-1 px-5 py-4 bg-[#fdfbf7] border border-[#1a3c34]/20 text-[#1a3c34] placeholder-[#8a948f] text-sm font-medium outline-none focus:border-[#1a3c34] transition-colors rounded ${status === "error" ? "border-red-500" : ""}`}
+        className={`flex-1 px-5 py-4 bg-[#f8f6f2] border border-[#1a1a1a]/20 text-[#1a1a1a] placeholder-[#8a8a8a] text-sm font-medium outline-none focus:border-[#1a1a1a] transition-colors rounded ${status === "error" ? "border-red-500" : ""}`}
         placeholder="Enter your email address"
         value={email}
         onChange={(e) => {
@@ -103,7 +103,7 @@ export default function EmailSignup() {
       />
       <button
         type="submit"
-        className="bg-[#1a3c34] text-[#fdfbf7] px-8 py-4 text-xs font-semibold tracking-widest uppercase rounded hover:bg-[#2c544a] transition-colors disabled:opacity-50 whitespace-nowrap"
+        className="bg-[#1a1a1a] text-[#f8f6f2] px-8 py-4 text-xs font-semibold tracking-widest uppercase rounded hover:bg-[#2d2d2d] transition-colors disabled:opacity-50 whitespace-nowrap"
         disabled={status === "loading"}
         id="signup-submit-button"
       >
@@ -112,7 +112,7 @@ export default function EmailSignup() {
       {message && (
         <p
           id="form-message"
-          className={`absolute -bottom-8 left-0 right-0 text-xs font-medium text-center ${status === "error" ? "text-red-500" : "text-[#4a5c54]"}`}
+          className={`absolute -bottom-8 left-0 right-0 text-xs font-medium text-center ${status === "error" ? "text-red-500" : "text-[#5a5a5a]"}`}
           role={status === "error" ? "alert" : "status"}
         >
           {message}

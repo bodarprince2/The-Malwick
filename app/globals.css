@@ -1,25 +1,26 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand Colors */
-  --color-brand-forest: #1a3c34;
-  --color-brand-forest-light: #2c544a;
+  /* Brand Colors — redesigned to complement the dark flowing M logo */
+  --color-brand-dark: #1a1a1a;
+  --color-brand-dark-soft: #2d2d2d;
   --color-brand-champagne: #e8dcc4;
   --color-brand-champagne-dark: #d4c4a4;
+  --color-brand-gold: #b8976a;
 
   /* Neutrals */
-  --color-surface-primary: #fdfbf7; /* Warm Ivory */
-  --color-surface-secondary: #f6f3eb; /* Cream / Off-White */
+  --color-surface-primary: #f8f6f2; /* Warm Ivory */
+  --color-surface-secondary: #f0ede6; /* Cream / Off-White */
   --color-surface-elevated: #ffffff;
-  --color-surface-forest: #1a3c34;
+  --color-surface-dark: #1a1a1a;
 
-  --color-text-primary: #1a3c34;
-  --color-text-secondary: #4a5c54;
-  --color-text-muted: #8a948f;
-  --color-text-inverse: #fdfbf7;
-  --color-text-accent: #c4a977;
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #5a5a5a;
+  --color-text-muted: #8a8a8a;
+  --color-text-inverse: #f8f6f2;
+  --color-text-accent: #b8976a;
 
-  --color-border-subtle: rgba(26, 60, 52, 0.1);
+  --color-border-subtle: rgba(26, 26, 26, 0.1);
   --color-border-accent: #e8dcc4;
 
   /* Typography */

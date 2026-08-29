@@ -63,14 +63,6 @@ export const metadata: Metadata = {
       "The Melwick is a premium clothing brand redefining everyday style. Discover our modern heritage apparel and luxury streetwear. Sign up for early access.",
     url: "https://themelwick.com",
     siteName: "The Melwick",
-    images: [
-      {
-        url: "/the-melwick-logo.png",
-        width: 1200,
-        height: 630,
-        alt: "The Melwick - Premium Streetwear Logo",
-      },
-    ],
     locale: "en_US",
     type: "website",
   },
@@ -79,7 +71,6 @@ export const metadata: Metadata = {
     title: "The Melwick | Premium Streetwear & Modern Heritage Apparel",
     description:
       "The Melwick is a premium clothing brand redefining everyday style. Discover our modern heritage apparel and luxury streetwear.",
-    images: ["/the-melwick-logo.png"],
     creator: "@themelwick",
   },
   robots: {
@@ -93,13 +84,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  icons: {
-    icon: [
-      { url: "/icon.svg", type: "image/svg+xml" },
-    ],
-    shortcut: "/icon.svg",
-    apple: "/the-melwick-logo.png",
-  },
 };
 
 export default function RootLayout({
@@ -112,7 +96,6 @@ export default function RootLayout({
     "@type": "Organization",
     "name": "The Melwick",
     "url": "https://themelwick.com",
-    "logo": "https://themelwick.com/the-melwick-logo.png",
     "sameAs": [
       "https://instagram.com/themelwick",
       "https://facebook.com/themelwick"

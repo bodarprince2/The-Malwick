@@ -4,9 +4,9 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 
 const slides = [
-  { src: "/the-melwick-mens-forest-green-tailored-coat.png", alt: "Premium modern menswear editorial photography featuring a forest green tailored coat" },
-  { src: "/the-melwick-mens-ivory-cable-knit-sweater.png", alt: "Premium modern menswear editorial photography featuring an ivory cable-knit sweater" },
-  { src: "/the-melwick-mens-tailored-charcoal-blazer.png", alt: "Premium modern menswear editorial photography featuring a tailored charcoal blazer" },
+  { src: "/the-melwick-mens-black-premium-tee.png", alt: "Premium oversized black heavyweight cotton t-shirt" },
+  { src: "/the-melwick-mens-cream-premium-tee.png", alt: "Premium oversized cream heavyweight cotton t-shirt" },
+  { src: "/the-melwick-mens-charcoal-premium-tee.png", alt: "Premium oversized charcoal heavyweight cotton t-shirt" },
 ];
 
 export default function HeroBackground() {
@@ -21,7 +21,7 @@ export default function HeroBackground() {
   }, []);
 
   return (
-    <div className="absolute inset-0 z-0 overflow-hidden bg-[#fdfbf7]" aria-hidden="true">
+    <div className="absolute inset-0 z-0 overflow-hidden bg-[#f8f6f2]" aria-hidden="true">
       {slides.map((slide, i) => (
         <div
           key={slide.src}
@@ -41,13 +41,13 @@ export default function HeroBackground() {
         </div>
       ))}
       
-      {/* Ivory overlay to ensure the dark text (#1a3c34) is always readable regardless of the model's dark clothing */}
-      <div className="absolute inset-0 z-20 bg-[#fdfbf7]/40 pointer-events-none" />
-      <div className="absolute inset-0 z-20 bg-gradient-to-b from-[#fdfbf7]/60 via-transparent to-[#fdfbf7]/80 pointer-events-none" />
+      {/* Ivory overlay to ensure the dark text is always readable */}
+      <div className="absolute inset-0 z-20 bg-[#f8f6f2]/40 pointer-events-none" />
+      <div className="absolute inset-0 z-20 bg-gradient-to-b from-[#f8f6f2]/60 via-transparent to-[#f8f6f2]/80 pointer-events-none" />
       
-      {/* Radial glow directly in the center to highlight the "MELWICK" text */}
+      {/* Radial glow directly in the center to highlight the brand name text */}
       <div className="absolute inset-0 z-20 flex items-center justify-center pointer-events-none">
-        <div className="w-[800px] h-[400px] bg-[#fdfbf7]/50 blur-[80px] rounded-[100%]" />
+        <div className="w-[800px] h-[400px] bg-[#f8f6f2]/50 blur-[80px] rounded-[100%]" />
       </div>
     </div>
   );
