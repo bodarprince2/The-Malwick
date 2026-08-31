@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import Navigation from "../components/Navigation";
+import WishlistHeart from "../components/WishlistHeart";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -34,31 +35,56 @@ const jsonLd = {
 const products = [
   {
     id: "tee-black",
-    name: "Signature Heavyweight Tee",
+    name: "Noir Oversized Tee",
     category: "Oversized T-Shirts",
     price: 1499,
     image: "/tee-black-front.png",
-    badge: "Signature Fit",
   },
   {
     id: "tee-cream",
-    name: "Heritage Drop-Shoulder Tee",
+    name: "Ivory Drop Tee",
     category: "Oversized T-Shirts",
     price: 1499,
     image: "/tee-cream-front.png",
-    badge: "Premium Heavy\nGauge Fabric",
   },
   {
     id: "tee-sand",
-    name: "Classic Relaxed Fit Tee",
+    name: "Sand Classic Tee",
     category: "Oversized T-Shirts",
     price: 1299,
     image: "/tee-sand-front.png",
-    badge: "Oversized\nFit",
+  },
+  {
+    id: "tee-charcoal",
+    name: "Charcoal Drape Tee",
+    category: "Oversized T-Shirts",
+    price: 1399,
+    image: "/tee-black-front.png",
+  },
+  {
+    id: "tee-oat",
+    name: "Oat Heritage Tee",
+    category: "Oversized T-Shirts",
+    price: 1299,
+    image: "/tee-cream-front.png",
+  },
+  {
+    id: "tee-dune",
+    name: "Dune Relaxed Tee",
+    category: "Oversized T-Shirts",
+    price: 1399,
+    image: "/tee-sand-front.png",
+  },
+  {
+    id: "tee-obsidian",
+    name: "Obsidian Core Tee",
+    category: "Oversized T-Shirts",
+    price: 1599,
+    image: "/tee-black-front.png",
   },
 ];
 
-const categories = ["All", "Oversized T-Shirts", "T-Shirts", "Coming Soon"];
+const categories = ["All", "Oversized T-Shirts"];
 
 export default function Shop() {
   return (
@@ -93,7 +119,7 @@ export default function Shop() {
         <div className="px-6 md:px-12 py-8 border-b border-[#1a1a1a]/10">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <h1 className="font-display text-2xl md:text-3xl font-medium text-[#1a1a1a]">
-              Men T-Shirts
+              Oversized T-Shirts
             </h1>
           </div>
         </div>
@@ -121,8 +147,8 @@ export default function Shop() {
           <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
             {products.map((product) => (
               <div key={product.id} className="group flex flex-col" id={`product-${product.id}`}>
-                {/* Product image card */}
-                <div className="relative aspect-[3/4] w-full bg-[#eae7e1] rounded-sm overflow-hidden">
+                {/* Product image card — hover effect only, no navigation */}
+                <div className="relative aspect-[3/4] w-full bg-[#eae7e1] rounded-sm overflow-hidden cursor-default">
                   <Image
                     src={product.image}
                     alt={product.name}
@@ -136,26 +162,12 @@ export default function Shop() {
                 <div className="pt-3 md:pt-4 flex flex-col gap-1">
                   <div className="flex items-start justify-between gap-2">
                     <h3 className="font-body text-sm md:text-base font-semibold text-[#1a1a1a] leading-tight line-clamp-2">
-                      {product.name}
+                      <Link href="/#signup-section" className="no-underline text-[#1a1a1a] hover:text-[#b8976a] transition-colors">
+                        {product.name}
+                      </Link>
                     </h3>
                     {/* Wishlist heart */}
-                    <button
-                      className="shrink-0 mt-0.5 text-[#8a8a8a] hover:text-[#b8976a] transition-colors"
-                      aria-label={`Add ${product.name} to wishlist`}
-                    >
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
-                      </svg>
-                    </button>
+                    <WishlistHeart name={product.name} />
                   </div>
                   <p className="text-xs md:text-sm text-[#8a8a8a]">{product.category}</p>
                   <p className="text-sm md:text-base font-semibold text-[#1a1a1a] mt-1">

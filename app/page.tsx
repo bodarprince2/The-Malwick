@@ -104,8 +104,12 @@ export default function Home() {
 
             {/* Launch Date */}
             <div className="animate-fade-in-up delay-600 mb-8 flex flex-col items-center lg:items-start w-full">
-              <p className="text-[0.65rem] md:text-xs font-semibold tracking-[0.2em] uppercase text-[#1a1a1a] mb-2">Launching On</p>
-              <p className="font-display text-2xl md:text-3xl text-[#8b6d45] mb-6 uppercase tracking-widest">1st December</p>
+              <p className="text-[0.65rem] md:text-xs font-semibold tracking-[0.2em] uppercase text-[#8a8a8a] mb-4">Launching On</p>
+              <div className="flex items-baseline gap-2 mb-6">
+                <span className="font-display text-5xl md:text-6xl font-semibold text-[#1a1a1a]">1</span>
+                <span className="font-display text-xl md:text-2xl italic font-light text-[#b8976a] leading-none -ml-0.5">st</span>
+                <span className="font-display text-3xl md:text-4xl font-medium tracking-[0.06em] text-[#1a1a1a] leading-none ml-1">December</span>
+              </div>
               <div className="w-full max-w-xs md:max-w-sm lg:max-w-none border-t border-[#1a1a1a]/10 pt-6">
                 <Countdown targetDate={LAUNCH_DATE} />
               </div>
@@ -116,7 +120,7 @@ export default function Home() {
               <a href="#signup-section" className="w-full lg:w-auto inline-flex items-center justify-center gap-3 bg-[#1a1a1a] text-[#f8f6f2] px-8 py-4 text-sm font-semibold tracking-widest uppercase rounded shadow hover:bg-[#2d2d2d] hover:shadow-lg transition-all border border-[#1a1a1a] min-h-[44px]">
                 <span>Join The Waitlist</span>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
-                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </a>
             </div>
@@ -138,7 +142,7 @@ export default function Home() {
           aria-labelledby="brand-story-heading"
         >
           <div className="max-w-7xl mx-auto reveal grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-            
+
             {/* Editorial Layout with Image */}
             <div className="relative h-[600px] w-full rounded-sm overflow-hidden shadow-sm">
               <Image
@@ -252,7 +256,7 @@ export default function Home() {
             <Link href="/privacy-policy" className="hover:text-[#b8976a] transition-colors" prefetch={true}>Privacy</Link>
           </div>
         </div>
-        
+
         <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-[#f8f6f2]/10 flex justify-center text-center">
           <p className="text-xs text-[#f8f6f2]/50 tracking-wide">
             &copy; 2026 The Melwick. All rights reserved.
