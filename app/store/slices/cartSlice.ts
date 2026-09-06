@@ -10,7 +10,6 @@ export interface CartItem {
   image: string;
   quantity: number;
   size?: string;
-  color?: string;
   status?: "coming_soon" | "available";
 }
 
@@ -27,8 +26,8 @@ const initialState: CartState = {
 };
 
 // Helper function to generate unique ID for cart items based on selected variants
-export const generateCartItemId = (productId: string, size?: string, color?: string) => {
-  return `${productId}${size ? `-${size}` : ''}${color ? `-${color}` : ''}`;
+export const generateCartItemId = (productId: string, size?: string) => {
+  return `${productId}${size ? `-${size}` : ''}`;
 };
 
 const calculateTotals = (state: CartState) => {
@@ -51,9 +50,9 @@ const cartSlice = createSlice({
       state.totalQuantity = action.payload.totalQuantity;
       state.subtotal = action.payload.subtotal;
     },
-    addToCart(state, action: PayloadAction<{ product: Product; size?: string; color?: string; quantity?: number }>) {
-      const { product, size, color, quantity = 1 } = action.payload;
-      const cartItemId = generateCartItemId(product.id, size, color);
+    addToCart(state, action: PayloadAction<{ product: Product; size?: string; quantity?: number }>) {
+      const { product, size, quantity = 1 } = action.payload;
+      const cartItemId = generateCartItemId(product.id, size);
       
       const existingItem = state.items.find(item => item.id === cartItemId);
       
@@ -69,7 +68,6 @@ const cartSlice = createSlice({
           image: product.image,
           quantity,
           size,
-          color,
           status: product.status,
         });
       }
@@ -111,7 +109,7 @@ const cartSlice = createSlice({
       
       if (existingItemIndex !== -1) {
         const item = state.items[existingItemIndex];
-        const newId = generateCartItemId(item.productId, newSize, item.color);
+        const newId = generateCartItemId(item.productId, newSize);
         
         const duplicateItemIndex = state.items.findIndex(i => i.id === newId);
         

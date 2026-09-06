@@ -111,7 +111,6 @@ export default function CartPage() {
                               </div>
                             </div>
                           )}
-                          {item.color && <p className="text-xs md:text-sm text-[#5a5a5a]">Color: <span className="text-[#1a1a1a]">{item.color}</span></p>}
                         </div>
                       </div>
                       <div className="text-left sm:text-right mt-2 sm:mt-0">

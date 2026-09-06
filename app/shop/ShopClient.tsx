@@ -65,7 +65,7 @@ export default function ShopClient({ products }: ShopClientProps) {
           {filteredProducts.map((product) => (
             <div key={product.id} className="group flex flex-col" id={`product-${product.id}`}>
               {/* Product image card */}
-              <div className="relative aspect-[3/4] w-full bg-[#eae7e1] overflow-hidden cursor-pointer">
+              <Link href={`/product/${product.id}`} className="block relative aspect-[3/4] w-full bg-[#eae7e1] overflow-hidden cursor-pointer">
                 {product.badge && (
                   <div className="absolute top-3 left-3 z-10 px-2 py-1 bg-[#1a1a1a] text-[#f8f6f2] text-[10px] font-bold tracking-widest uppercase">
                     {product.badge}
@@ -77,7 +77,7 @@ export default function ShopClient({ products }: ShopClientProps) {
                   </div>
                 )}
                 {/* Wishlist heart */}
-                <div className="absolute top-3 right-3 z-10">
+                <div className="absolute top-3 right-3 z-10" onClick={(e) => e.preventDefault()}>
                   <WishlistHeart product={product} />
                 </div>
                 <Image
@@ -87,13 +87,12 @@ export default function ShopClient({ products }: ShopClientProps) {
                   className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
                   sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
                 />
-
-              </div>
+              </Link>
 
               {/* Product info */}
               <div className="pt-4 flex flex-col gap-1.5">
                 <h3 className="font-body text-sm md:text-base font-semibold text-[#1a1a1a] leading-tight line-clamp-1 group-hover:text-[#b8976a] transition-colors">
-                  <Link href={`/#product-${product.id}`} className="no-underline text-inherit">
+                  <Link href={`/product/${product.id}`} className="no-underline text-inherit">
                     {product.name}
                   </Link>
                 </h3>
@@ -109,39 +108,45 @@ export default function ShopClient({ products }: ShopClientProps) {
                   )}
                 </div>
 
-                <button
-                  disabled={isProductInCart(product.id)}
-                  className={`mt-3 w-full flex items-center justify-center gap-2 py-2.5 text-xs font-semibold tracking-[0.1em] uppercase transition-all duration-300 ${
-                    isProductInCart(product.id)
-                      ? "bg-[#b8976a] text-[#f8f6f2] cursor-not-allowed opacity-80"
-                      : "bg-[#1a1a1a] text-[#f8f6f2] hover:bg-[#b8976a] active:scale-[0.97]"
-                  }`}
-                  onClick={(e) => { 
-                    e.preventDefault(); 
-                    e.stopPropagation(); 
-                    if (isProductInCart(product.id)) {
-                      toast.error("Product is already in the cart");
-                      return;
-                    }
-                    dispatch(addToCart({ 
-                      product, 
-                      size: product.sizes?.[0], 
-                      color: product.colors?.[0] 
-                    }));
-                    toast.success("Product added to cart");
-                  }}
-                >
-                  {isProductInCart(product.id) ? (
-                    <>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="9" cy="21" r="1" />
-                        <circle cx="20" cy="21" r="1" />
-                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                {isProductInCart(product.id) ? (
+                  <Link
+                    href="/cart"
+                    className="group relative overflow-hidden mt-3 w-full flex items-center justify-center py-3.5 text-xs font-semibold tracking-[0.1em] uppercase transition-colors duration-300 bg-[#b8976a] text-[#f8f6f2]"
+                  >
+                    <span className="inline-flex items-center justify-center transition-transform duration-300 ease-out md:group-hover:-translate-x-3 motion-reduce:transition-none motion-reduce:transform-none">
+                      View Cart
+                    </span>
+                    <span className="absolute right-4 opacity-0 transition-all duration-300 ease-out md:group-hover:opacity-100 md:group-hover:translate-x-0 translate-x-3 hidden md:block motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:transform-none">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
                       </svg>
-                      Already in Cart
-                    </>
-                  ) : "Add to Cart"}
-                </button>
+                    </span>
+                  </Link>
+                ) : (
+                  <button
+                    onClick={(e) => { 
+                      e.preventDefault(); 
+                      e.stopPropagation(); 
+                      dispatch(addToCart({ 
+                        product, 
+                        size: product.sizes?.[0]
+                      }));
+                      toast.success("Product added to cart");
+                    }}
+                    className="group relative overflow-hidden mt-3 w-full flex items-center justify-center py-3.5 text-xs font-semibold tracking-[0.1em] uppercase transition-colors duration-300 bg-[#1a1a1a] text-[#f8f6f2] hover:bg-[#b8976a]"
+                  >
+                    <span className="inline-flex items-center justify-center transition-transform duration-300 ease-out md:group-hover:-translate-x-3 motion-reduce:transition-none motion-reduce:transform-none">
+                      Add to Cart
+                    </span>
+                    <span className="absolute right-4 opacity-0 transition-all duration-300 ease-out md:group-hover:opacity-100 md:group-hover:translate-x-0 translate-x-3 hidden md:block motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:transform-none">
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                      </svg>
+                    </span>
+                  </button>
+                )}
               </div>
             </div>
           ))}
