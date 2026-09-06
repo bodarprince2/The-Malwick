@@ -75,8 +75,8 @@ export default function CartPage() {
               </div>
 
               {items.map((item) => (
-                <div key={item.id} className="flex flex-col md:flex-row gap-6 p-6 bg-white border border-[#1a1a1a]/5 shadow-sm hover:shadow-md transition-shadow">
-                  <div className="relative w-full md:w-32 h-40 bg-[#eae7e1] shrink-0">
+                <div key={item.id} className="flex gap-4 md:gap-6 p-4 md:p-6 bg-white border border-[#1a1a1a]/5 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="relative w-24 h-32 md:w-32 md:h-40 bg-[#eae7e1] shrink-0">
                     <Image
                       src={item.image || products.find(p => p.id === item.productId)?.image || "/logo.png"}
                       alt={item.name}
@@ -86,55 +86,55 @@ export default function CartPage() {
                   </div>
 
                   <div className="flex flex-col flex-1 justify-between">
-                    <div className="flex justify-between items-start">
+                    <div className="flex flex-col sm:flex-row justify-between items-start gap-2 sm:gap-0">
                       <div>
-                        <Link href={`/product/${item.productId}`} className="font-display text-xl font-medium text-[#1a1a1a] hover:text-[#b8976a] transition-colors">
+                        <Link href={`/product/${item.productId}`} className="font-display text-lg md:text-xl font-medium text-[#1a1a1a] hover:text-[#b8976a] transition-colors">
                           {item.name}
                         </Link>
-                        <div className="mt-2 space-y-2">
+                        <div className="mt-2 space-y-1 md:space-y-2">
                           {item.size && (
                             <div className="flex items-center gap-2 mt-1">
-                              <span className="text-sm text-[#5a5a5a]">Size:</span>
+                              <span className="text-xs md:text-sm text-[#5a5a5a]">Size:</span>
                               <div className="relative">
                                 <select
                                   value={item.size}
                                   onChange={(e) => dispatch(updateItemSize({ id: item.id, newSize: e.target.value }))}
-                                  className="appearance-none text-xs font-semibold tracking-wider uppercase text-[#1a1a1a] bg-white border border-[#1a1a1a]/20 rounded-none pl-3 pr-8 py-1.5 focus:outline-none focus:border-[#1a1a1a] cursor-pointer hover:border-[#1a1a1a]/40 transition-colors"
+                                  className="appearance-none text-[10px] md:text-xs font-semibold tracking-wider uppercase text-[#1a1a1a] bg-white border border-[#1a1a1a]/20 rounded-none pl-2 pr-6 md:pl-3 md:pr-8 py-1 md:py-1.5 focus:outline-none focus:border-[#1a1a1a] cursor-pointer hover:border-[#1a1a1a]/40 transition-colors"
                                 >
                                   {products.find(p => p.id === item.productId)?.sizes.map(size => (
                                     <option key={size} value={size}>{size}</option>
                                   ))}
                                 </select>
-                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-[#1a1a1a]">
-                                  <svg className="fill-current h-3 w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
+                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 md:px-2 text-[#1a1a1a]">
+                                  <svg className="fill-current h-2 w-2 md:h-3 md:w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                                 </div>
                               </div>
                             </div>
                           )}
-                          {item.color && <p className="text-sm text-[#5a5a5a]">Color: <span className="text-[#1a1a1a]">{item.color}</span></p>}
+                          {item.color && <p className="text-xs md:text-sm text-[#5a5a5a]">Color: <span className="text-[#1a1a1a]">{item.color}</span></p>}
                         </div>
                       </div>
-                      <div className="text-right">
-                        <p className="text-lg font-medium text-[#1a1a1a]">₹ {item.price.toLocaleString("en-IN")}</p>
-                        <p className="text-[10px] text-[#8a8a8a] uppercase tracking-wider mt-1">MRP incl. of all taxes</p>
+                      <div className="text-left sm:text-right mt-2 sm:mt-0">
+                        <p className="text-base md:text-lg font-medium text-[#1a1a1a]">₹ {item.price.toLocaleString("en-IN")}</p>
+                        <p className="text-[9px] md:text-[10px] text-[#8a8a8a] uppercase tracking-wider mt-0.5 md:mt-1">MRP incl. of all taxes</p>
                       </div>
                     </div>
 
-                    <div className="flex justify-between items-end mt-6">
-                      <div className="flex items-center gap-4">
-                        <span className="text-sm text-[#5a5a5a]">Quantity:</span>
+                    <div className="flex justify-between items-end mt-4 md:mt-6">
+                      <div className="flex items-center gap-2 md:gap-4">
+                        <span className="hidden sm:inline text-xs md:text-sm text-[#5a5a5a]">Quantity:</span>
                         <div className="flex items-center border border-[#1a1a1a]/20 rounded-full bg-white">
                           <button
                             onClick={() => dispatch(decreaseQuantity(item.id))}
-                            className="w-8 h-8 flex items-center justify-center text-[#1a1a1a] hover:bg-[#1a1a1a]/5 rounded-l-full transition-colors"
+                            className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center text-[#1a1a1a] hover:bg-[#1a1a1a]/5 rounded-l-full transition-colors"
                             disabled={item.quantity <= 1}
                           >
                             -
                           </button>
-                          <span className="w-8 text-center text-sm font-medium">{item.quantity}</span>
+                          <span className="w-6 md:w-8 text-center text-xs md:text-sm font-medium">{item.quantity}</span>
                           <button
                             onClick={() => dispatch(increaseQuantity(item.id))}
-                            className="w-8 h-8 flex items-center justify-center text-[#1a1a1a] hover:bg-[#1a1a1a]/5 rounded-r-full transition-colors"
+                            className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center text-[#1a1a1a] hover:bg-[#1a1a1a]/5 rounded-r-full transition-colors"
                           >
                             +
                           </button>
@@ -146,7 +146,7 @@ export default function CartPage() {
                         className="text-[#FF0000] hover:text-red-500 transition-colors flex items-center justify-center p-1"
                         aria-label="Delete item"
                       >
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" className="md:w-[18px] md:h-[18px]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                           <path d="M3 6h18"></path>
                           <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
                           <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>

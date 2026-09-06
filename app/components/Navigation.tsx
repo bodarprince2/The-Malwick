@@ -3,10 +3,12 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const pathname = usePathname();
 
   // Track mount state for portal rendering
   useEffect(() => {
@@ -26,76 +28,62 @@ export default function Navigation() {
   }, [isOpen]);
 
   const links = [
-    { href: "/", label: "Home" },
     { href: "/shop", label: "Shop" },
     { href: "/about", label: "About" },
     { href: "/contact", label: "Contact" },
-    { href: "/privacy-policy", label: "Privacy" },
-    { href: "/#signup-section", label: "Notify" },
   ];
 
-  // Mobile sidebar rendered via portal so that the header's
-  // backdrop-filter (added on scroll) doesn't create a new
-  // containing block that breaks fixed positioning.
-  const mobileSidebar = (
+  const mobileMenu = (
     <>
-      {/* Dark backdrop */}
       <div
-        className={`fixed inset-0 bg-black/40 z-[105] transition-opacity duration-400 ease-in-out md:hidden ${
+        className={`fixed inset-0 bg-[#f8f6f2] z-[105] flex flex-col transition-all duration-700 ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden ${
           isOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
         }`}
-        onClick={() => setIsOpen(false)}
-        aria-hidden="true"
-      />
-
-      {/* Sidebar panel */}
-      <div
-        className={`fixed top-0 right-0 bottom-0 w-[280px] max-w-[80vw] bg-[#f8f6f2] z-[106] flex flex-col shadow-[-4px_0_24px_rgba(0,0,0,0.12)] transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] md:hidden ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
       >
-        {/* Close button */}
-        <div className="flex justify-end px-6 pt-6">
+        {/* Close button - Top Right */}
+        <div className="absolute top-6 right-6 md:right-12 z-[110]">
           <button
             onClick={() => setIsOpen(false)}
-            className="w-10 h-10 flex items-center justify-center rounded-full border border-[#1a1a1a]/10 text-[#1a1a1a] hover:bg-[#1a1a1a]/5 transition-colors focus:outline-none"
+            className="w-10 h-10 flex items-center justify-center rounded-full text-[#1a1a1a] hover:bg-[#1a1a1a]/5 transition-colors focus:outline-none"
             aria-label="Close menu"
           >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-              <line x1="2" y1="2" x2="14" y2="14" />
-              <line x1="14" y1="2" x2="2" y2="14" />
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square">
+              <line x1="6" y1="6" x2="18" y2="18" />
+              <line x1="18" y1="6" x2="6" y2="18" />
             </svg>
           </button>
         </div>
 
-        {/* Divider */}
-        <div className="mx-6 mt-4 mb-2 h-px bg-[#1a1a1a]/10" />
-
-        {/* Navigation links */}
-        <nav className="flex flex-col px-6 pt-4 gap-1">
-          {links.map((link, index) => (
-            <div
-              key={link.label}
-              className={`transition-all duration-500 transform ${
-                isOpen ? "translate-x-0 opacity-100" : "translate-x-6 opacity-0"
-              }`}
-              style={{ transitionDelay: `${isOpen ? index * 70 + 150 : 0}ms` }}
-            >
-              <Link
-                href={link.href}
-                onClick={() => setIsOpen(false)}
-                className="block py-3 font-display text-xl font-medium tracking-[0.08em] uppercase text-[#1a1a1a] no-underline transition-colors hover:text-[#b8976a]"
+        {/* Navigation links - Centered full screen */}
+        <nav className="flex-1 flex flex-col items-center justify-center gap-8 px-6">
+          {links.map((link, index) => {
+            const isActive = pathname === link.href;
+            return (
+              <div
+                key={link.label}
+                className={`transition-all duration-700 transform ${
+                  isOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+                }`}
+                style={{ transitionDelay: `${isOpen ? index * 100 + 100 : 0}ms` }}
               >
-                {link.label}
-              </Link>
-            </div>
-          ))}
+                <Link
+                  href={link.href}
+                  onClick={() => setIsOpen(false)}
+                  className={`block font-display text-4xl sm:text-5xl font-medium tracking-[0.1em] uppercase transition-colors hover:text-[#b8976a] ${
+                    isActive ? "text-[#1a1a1a]" : "text-[#1a1a1a]/70"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              </div>
+            );
+          })}
         </nav>
 
         {/* Bottom accent */}
-        <div className="mt-auto px-6 pb-8">
-          <div className="h-px bg-[#1a1a1a]/10 mb-4" />
-          <p className="font-body text-[10px] tracking-[0.2em] uppercase text-[#8a8a8a]">
+        <div className="px-6 pb-12 flex flex-col items-center">
+          <div className="w-12 h-px bg-[#1a1a1a]/20 mb-8" />
+          <p className="font-body text-xs tracking-[0.2em] uppercase text-[#1a1a1a]/50">
             The Melwick
           </p>
         </div>
@@ -105,35 +93,43 @@ export default function Navigation() {
 
   return (
     <>
-      {/* Desktop Nav */}
-      <nav className="hidden md:flex items-center gap-8" aria-label="Primary navigation">
-        {links.map((link) => (
-          <Link
-            key={link.label}
-            href={link.href}
-            className="font-body text-xs font-medium tracking-[0.14em] uppercase text-[#5a5a5a] no-underline transition-colors hover:text-[#1a1a1a]"
-          >
-            {link.label}
-          </Link>
-        ))}
+      {/* Desktop Nav - Absolutely centered in the Header */}
+      <nav className="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-8 lg:gap-12" aria-label="Primary navigation">
+        {links.map((link) => {
+          const isActive = pathname === link.href;
+          return (
+            <Link
+              key={link.label}
+              href={link.href}
+              className={`relative font-body text-xs font-medium tracking-[0.14em] uppercase no-underline transition-colors hover:text-[#1a1a1a] ${
+                isActive ? "text-[#1a1a1a] font-semibold" : "text-[#5a5a5a]"
+              }`}
+            >
+              {link.label}
+              {isActive && (
+                <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 bg-[#b8976a] rounded-full" />
+              )}
+            </Link>
+          );
+        })}
       </nav>
 
       {/* Mobile Nav Toggle (Hamburger) */}
-      <button
-        className="md:hidden p-2 -mr-2 text-[#1a1a1a] focus:outline-none z-[110] relative"
-        onClick={() => setIsOpen(!isOpen)}
-        aria-label="Toggle menu"
-      >
-        <div className="w-6 h-5 flex flex-col justify-between items-end">
-          <span className={`block h-[2px] bg-[#1a1a1a] transition-all duration-300 ${isOpen ? 'w-6 rotate-45 translate-y-[9px]' : 'w-6'}`} />
-          <span className={`block h-[2px] bg-[#1a1a1a] transition-all duration-300 ${isOpen ? 'w-0 opacity-0' : 'w-5'}`} />
-          <span className={`block h-[2px] bg-[#1a1a1a] transition-all duration-300 ${isOpen ? 'w-6 -rotate-45 -translate-y-[9px]' : 'w-4'}`} />
-        </div>
-      </button>
+      <div className="md:hidden flex items-center border-l border-[#1a1a1a]/20 pl-4">
+        <button
+          className="p-1 text-[#1a1a1a] focus:outline-none relative z-[110]"
+          onClick={() => setIsOpen(true)}
+          aria-label="Open menu"
+        >
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="square">
+            <line x1="4" y1="8" x2="20" y2="8" />
+            <line x1="4" y1="16" x2="20" y2="16" />
+          </svg>
+        </button>
+      </div>
 
-      {/* Mobile Sidebar — portaled to body to avoid containing block issues */}
-      {mounted && createPortal(mobileSidebar, document.body)}
+      {/* Mobile Menu - Portaled */}
+      {mounted && createPortal(mobileMenu, document.body)}
     </>
   );
 }
-
