@@ -12,11 +12,13 @@ export interface Product {
   rating: number;
   reviewCount: number;
   badge?: "New" | "Featured" | "Bestseller";
+  status?: "coming_soon" | "available";
 }
 
 export const products: Product[] = [
   // Original 3 with unique images
   {
+    status: "coming_soon",
     id: "tee-cream",
     name: "Ivory Drop Tee",
     description: "Relaxed drop-shoulder tee in soft ivory.",
@@ -29,6 +31,7 @@ export const products: Product[] = [
     reviewCount: 89,
     badge: "Bestseller",
   }, {
+    status: "coming_soon",
     id: "tee-black",
     name: "Noir Oversized Tee",
     description: "Premium heavyweight organic cotton tee.",
@@ -42,6 +45,7 @@ export const products: Product[] = [
     reviewCount: 124,
   },
   {
+    status: "coming_soon",
     id: "tee-sand",
     name: "Sand Classic Tee",
     description: "Classic fit tee in a versatile sand hue.",
@@ -55,6 +59,7 @@ export const products: Product[] = [
   },
 
   {
+    status: "coming_soon",
     id: "tee-oat",
     name: "Oat Heritage Tee",
     description: "Heritage inspired tee in a warm oat shade.",
@@ -67,6 +72,7 @@ export const products: Product[] = [
     reviewCount: 210,
   },
   {
+    status: "coming_soon",
     id: "tee-dune",
     name: "Dune Relaxed Tee",
     description: "Ultra-relaxed fit tee for everyday luxury.",
@@ -79,6 +85,7 @@ export const products: Product[] = [
     reviewCount: 77,
   },
   {
+    status: "coming_soon",
     id: "tee-obsidian",
     name: "Obsidian Core Tee",
     description: "The essential core tee in dark obsidian.",
@@ -93,6 +100,7 @@ export const products: Product[] = [
     badge: "Featured",
   },
   {
+    status: "coming_soon",
     id: "tee-new-1",
     name: "Atelier Heavyweight Tee",
     description: "Luxurious 300GSM cotton tailored for a structured fit.",
@@ -106,6 +114,7 @@ export const products: Product[] = [
     badge: "New",
   },
   {
+    status: "coming_soon",
     id: "tee-new-2",
     name: "Signature Supima Tee",
     description: "Crafted from ultra-soft Supima cotton for unparalleled comfort.",
@@ -118,6 +127,7 @@ export const products: Product[] = [
     reviewCount: 112,
   },
   {
+    status: "coming_soon",
     id: "tee-new-3",
     name: "Minimalist Mock Neck",
     description: "A refined mock neck silhouette with dropped shoulders.",
@@ -130,6 +140,7 @@ export const products: Product[] = [
     reviewCount: 38,
   },
   {
+    status: "coming_soon",
     id: "tee-new-4",
     name: "Textured Knit Tee",
     description: "Elevated everyday tee featuring a subtle textured knit.",
@@ -144,6 +155,7 @@ export const products: Product[] = [
     badge: "Featured",
   },
   {
+    status: "coming_soon",
     id: "tee-new-5",
     name: "Urban Luxe Box Tee",
     description: "A boxy, modern fit designed for the urban landscape.",
@@ -156,6 +168,7 @@ export const products: Product[] = [
     reviewCount: 89,
   },
   {
+    status: "coming_soon",
     id: "tee-new-6",
     name: "Maison Washed Tee",
     description: "Vintage-washed premium cotton with a lived-in feel.",
@@ -168,6 +181,7 @@ export const products: Product[] = [
     reviewCount: 120,
   },
   {
+    status: "coming_soon",
     id: "tee-new-7",
     name: "Essential Modal Blend",
     description: "Incredibly soft modal-cotton blend for a flawless drape.",
@@ -182,6 +196,7 @@ export const products: Product[] = [
 
   // 2 New Shirts with fully unique images
   {
+    status: "coming_soon",
     id: "shirt-1",
     name: "Maison Linen Resort Shirt",
     description: "Breathable, lightweight European linen perfect for warm days.",
@@ -195,6 +210,7 @@ export const products: Product[] = [
     badge: "New",
   },
   {
+    status: "coming_soon",
     id: "shirt-2",
     name: "Executive Oxford Shirt",
     description: "A tailored modern classic woven from premium Oxford cloth.",

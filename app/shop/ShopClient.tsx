@@ -5,12 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 import WishlistHeart from "../components/WishlistHeart";
 import { Product } from "../data/products";
+import { useAppDispatch, useAppSelector } from "../store/hooks";
+import { addToCart } from "../store/slices/cartSlice";
+import toast from "react-hot-toast";
 
 interface ShopClientProps {
   products: Product[];
 }
 
 export default function ShopClient({ products }: ShopClientProps) {
+  const dispatch = useAppDispatch();
+  const cartItems = useAppSelector((state) => state.cart.items);
+  const isProductInCart = (productId: string) => cartItems.some(item => item.productId === productId);
   const [activeCategory, setActiveCategory] = useState("All");
 
   const categories = useMemo(() => {
@@ -72,7 +78,7 @@ export default function ShopClient({ products }: ShopClientProps) {
                 )}
                 {/* Wishlist heart */}
                 <div className="absolute top-3 right-3 z-10">
-                  <WishlistHeart name={product.name} />
+                  <WishlistHeart product={product} />
                 </div>
                 <Image
                   src={product.image}
@@ -104,10 +110,37 @@ export default function ShopClient({ products }: ShopClientProps) {
                 </div>
 
                 <button
-                  className="mt-3 w-full flex items-center justify-center gap-2 bg-[#1a1a1a] text-[#f8f6f2] py-2.5 text-xs font-semibold tracking-[0.1em] uppercase hover:bg-[#b8976a] transition-all duration-300 active:scale-[0.97]"
-                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}
+                  disabled={isProductInCart(product.id)}
+                  className={`mt-3 w-full flex items-center justify-center gap-2 py-2.5 text-xs font-semibold tracking-[0.1em] uppercase transition-all duration-300 ${
+                    isProductInCart(product.id)
+                      ? "bg-[#b8976a] text-[#f8f6f2] cursor-not-allowed opacity-80"
+                      : "bg-[#1a1a1a] text-[#f8f6f2] hover:bg-[#b8976a] active:scale-[0.97]"
+                  }`}
+                  onClick={(e) => { 
+                    e.preventDefault(); 
+                    e.stopPropagation(); 
+                    if (isProductInCart(product.id)) {
+                      toast.error("Product is already in the cart");
+                      return;
+                    }
+                    dispatch(addToCart({ 
+                      product, 
+                      size: product.sizes?.[0], 
+                      color: product.colors?.[0] 
+                    }));
+                    toast.success("Product added to cart");
+                  }}
                 >
-                  Add to Cart
+                  {isProductInCart(product.id) ? (
+                    <>
+                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="9" cy="21" r="1" />
+                        <circle cx="20" cy="21" r="1" />
+                        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                      </svg>
+                      Already in Cart
+                    </>
+                  ) : "Add to Cart"}
                 </button>
               </div>
             </div>

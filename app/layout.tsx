@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Script from "next/script";
 import { Cormorant_Garamond, Inter } from "next/font/google";
 import ActivityTracker from "./components/ActivityTracker";
+import ToastProvider from "./components/ToastProvider";
+import ReduxProvider from "./store/Provider";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -147,8 +149,11 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <ActivityTracker />
-        {children}
+        <ReduxProvider>
+          <ToastProvider />
+          <ActivityTracker />
+          {children}
+        </ReduxProvider>
       </body>
     </html>
   );

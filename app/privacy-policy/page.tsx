@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import Navigation from "../components/Navigation";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -19,19 +21,7 @@ export default function PrivacyPolicy() {
   return (
     <div className="min-h-screen flex flex-col bg-[#f8f6f2]">
       {/* ── Header ── */}
-      <header className="w-full px-6 py-6 md:px-12 flex items-center justify-between border-b border-[#1a1a1a]/10 bg-[#f8f6f2]">
-        <Link href="/" className="flex items-center gap-3 no-underline text-[#1a1a1a]" aria-label="The Melwick — Home">
-          <Image
-            src="/logo.png"
-            alt="The Melwick Logo"
-            width={69}
-            height={46}
-            className="h-[46px] w-auto object-contain"
-            priority
-          />
-        </Link>
-        <Navigation />
-      </header>
+      <Header variant="solid" />
 
       {/* ── Main Content ── */}
       <main className="flex-1 py-20 px-6 md:px-12 max-w-4xl mx-auto w-full">
@@ -76,22 +66,7 @@ export default function PrivacyPolicy() {
         </div>
       </main>
 
-      {/* ── Footer ── */}
-      <footer className="bg-[#1a1a1a] text-[#f8f6f2] py-16 px-6 md:px-12 mt-auto border-t border-[#f8f6f2]/10">
-        <div className="max-w-7xl mx-auto flex flex-col items-center justify-center gap-8">
-          <div className="flex gap-8 text-sm font-medium tracking-widest uppercase text-[#f8f6f2]/70">
-            <Link href="/about" className="hover:text-[#b8976a] transition-colors">About</Link>
-            <Link href="/contact" className="hover:text-[#b8976a] transition-colors">Contact</Link>
-            <Link href="/privacy-policy" className="hover:text-[#b8976a] transition-colors">Privacy</Link>
-          </div>
-        </div>
-        
-        <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-[#f8f6f2]/10 flex justify-center text-center">
-          <p className="text-xs text-[#f8f6f2]/50 tracking-wide">
-            &copy; 2026 The Melwick. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

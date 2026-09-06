@@ -5,6 +5,9 @@ import ScrollEffects from "./components/ScrollEffects";
 import Navigation from "./components/Navigation";
 import HeroCarousel from "./components/HeroCarousel";
 import dynamic from "next/dynamic";
+import ActivityTracker from "./components/ActivityTracker";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 const Countdown = dynamic(() => import("./components/Countdown"));
 const EmailSignup = dynamic(() => import("./components/EmailSignup"));
@@ -65,19 +68,7 @@ export default function Home() {
       <ScrollEffects />
 
       {/* ── Header ── */}
-      <header className="site-header fixed top-0 left-0 right-0 z-[100] px-6 py-6 md:px-12 flex items-center justify-between transition-all duration-500 bg-transparent [&.scrolled]:bg-[#f8f6f2]/95 [&.scrolled]:backdrop-blur-md [&.scrolled]:border-b [&.scrolled]:border-[#1a1a1a]/10 [&.scrolled]:py-4 animate-fade-in" id="site-header">
-        <Link href="/" className="flex items-center gap-3 no-underline text-[#1a1a1a]" aria-label="The Melwick — Home">
-          <Image
-            src="/logo.png"
-            alt="The Melwick Logo"
-            width={69}
-            height={46}
-            className="h-[46px] w-auto object-contain"
-            priority
-          />
-        </Link>
-        <Navigation />
-      </header>
+      <Header variant="transparent" />
 
       <main>
         {/* ── Hero Section ── */}
@@ -247,22 +238,7 @@ export default function Home() {
       </main>
 
       {/* ── Footer ── */}
-      <footer className="bg-[#1a1a1a] text-[#f8f6f2] py-16 px-6 md:px-12 border-t border-[#f8f6f2]/10" id="site-footer">
-        <div className="max-w-7xl mx-auto flex flex-col items-center justify-center gap-8">
-          <div className="flex flex-wrap justify-center gap-8 text-sm font-medium tracking-widest uppercase text-[#f8f6f2]/70">
-            <Link href="/shop" className="hover:text-[#b8976a] transition-colors" prefetch={true}>Shop</Link>
-            <Link href="/about" className="hover:text-[#b8976a] transition-colors" prefetch={true}>About</Link>
-            <Link href="/contact" className="hover:text-[#b8976a] transition-colors" prefetch={true}>Contact</Link>
-            <Link href="/privacy-policy" className="hover:text-[#b8976a] transition-colors" prefetch={true}>Privacy</Link>
-          </div>
-        </div>
-
-        <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-[#f8f6f2]/10 flex justify-center text-center">
-          <p className="text-xs text-[#f8f6f2]/50 tracking-wide">
-            &copy; 2026 The Melwick. All rights reserved.
-          </p>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }
