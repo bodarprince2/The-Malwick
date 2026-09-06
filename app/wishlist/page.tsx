@@ -85,8 +85,7 @@ export default function WishlistPage() {
                       if (fullProduct) {
                         dispatch(addToCart({ 
                           product: fullProduct, 
-                          size: fullProduct.sizes?.[0], 
-                          color: fullProduct.colors?.[0] 
+                          size: fullProduct.sizes?.[0]
                         }));
                         toast.success("Product added to cart");
                       } else {

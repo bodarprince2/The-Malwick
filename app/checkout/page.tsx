@@ -133,12 +133,7 @@ export default function CheckoutPage() {
                       <span className="text-base font-medium text-[#1a1a1a]">{comingSoonItem.size}</span>
                     </div>
                   )}
-                  {comingSoonItem.color && (
-                    <div className="flex flex-col gap-1">
-                      <span className="text-[10px] font-semibold tracking-widest uppercase text-[#8a8a8a]">Color</span>
-                      <span className="text-base font-medium text-[#1a1a1a]">{comingSoonItem.color}</span>
-                    </div>
-                  )}
+
                   <div className="flex flex-col gap-1">
                     <span className="text-[10px] font-semibold tracking-widest uppercase text-[#8a8a8a]">Quantity</span>
                     <span className="text-base font-medium text-[#1a1a1a]">{comingSoonItem.quantity}</span>
@@ -283,7 +278,6 @@ export default function CheckoutPage() {
                         <h4 className="font-display text-xl font-medium text-[#1a1a1a]">{item.name}</h4>
                         <div className="mt-2 flex gap-4">
                           {item.size && <p className="text-sm text-[#5a5a5a]">Size: <span className="text-[#1a1a1a]">{item.size}</span></p>}
-                          {item.color && <p className="text-sm text-[#5a5a5a]">Color: <span className="text-[#1a1a1a]">{item.color}</span></p>}
                         </div>
                       </div>
                       <div className="mt-4 sm:mt-0 flex justify-between items-end">

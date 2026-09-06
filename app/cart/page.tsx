@@ -101,7 +101,7 @@ export default function CartPage() {
                                   onChange={(e) => dispatch(updateItemSize({ id: item.id, newSize: e.target.value }))}
                                   className="appearance-none text-[10px] md:text-xs font-semibold tracking-wider uppercase text-[#1a1a1a] bg-white border border-[#1a1a1a]/20 rounded-none pl-2 pr-6 md:pl-3 md:pr-8 py-1 md:py-1.5 focus:outline-none focus:border-[#1a1a1a] cursor-pointer hover:border-[#1a1a1a]/40 transition-colors"
                                 >
-                                  {products.find(p => p.id === item.productId)?.sizes.map(size => (
+                                  {products.find(p => p.id === item.productId)?.sizes?.map(size => (
                                     <option key={size} value={size}>{size}</option>
                                   ))}
                                 </select>

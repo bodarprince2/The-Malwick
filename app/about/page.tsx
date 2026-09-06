@@ -1,8 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import Navigation from "../components/Navigation";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
+import Navigation from "@/app/components/Navigation";
+import Header from "@/app/components/Header";
+import Footer from "@/app/components/Footer";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {

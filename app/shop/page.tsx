@@ -1,9 +1,9 @@
 import Image from "next/image";
 import Link from "next/link";
-import Navigation from "../components/Navigation";
-import Header from "../components/Header";
-import Footer from "../components/Footer";
-import WishlistHeart from "../components/WishlistHeart";
+import Navigation from "@/app/components/Navigation";
+import Header from "@/app/components/Header";
+import Footer from "@/app/components/Footer";
+import WishlistHeart from "@/app/components/WishlistHeart";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
