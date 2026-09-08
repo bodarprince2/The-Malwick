@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, use, FormEvent } from "react";
+import { useState, use, useRef, useEffect, useCallback } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { products } from "@/app/data/products";
+import { products, getProductImages } from "@/app/data/products";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { addToCart } from "@/app/store/slices/cartSlice";
 import toast from "react-hot-toast";
@@ -30,6 +30,137 @@ const Accordion = ({ title, content }: { title: string; content: string }) => {
     </details>
   );
 };
+
+/** Derive a human-readable view label from the image filename */
+function getViewLabel(src: string, index: number): string {
+  const name = src.split("/").pop()?.replace(/\.[^.]+$/, "") ?? "";
+  const labels: Record<string, string> = {
+    front: "Front",
+    back: "Back",
+    left: "Left",
+    right: "Right",
+    "three-quarter-front": "¾ Front",
+    "three-quarter-back": "¾ Back",
+  };
+  return labels[name] ?? `View ${index + 1}`;
+}
+
+/** Horizontal scroll image gallery with snap, touch, and dot indicator */
+function ProductGallery({ images, productName, badge, originalPrice, price }: {
+  images: string[];
+  productName: string;
+  badge?: string;
+  originalPrice?: number;
+  price: number;
+}) {
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // Sync active dot to scroll position
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el || images.length <= 1) return;
+
+    const handleScroll = () => {
+      const itemWidth = el.scrollWidth / images.length;
+      const newIndex = Math.round(el.scrollLeft / itemWidth);
+      setActiveIndex(Math.max(0, Math.min(newIndex, images.length - 1)));
+    };
+
+    el.addEventListener("scroll", handleScroll, { passive: true });
+    return () => el.removeEventListener("scroll", handleScroll);
+  }, [images.length]);
+
+  const scrollToIndex = useCallback((idx: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const itemWidth = el.scrollWidth / images.length;
+    el.scrollTo({ left: itemWidth * idx, behavior: "smooth" });
+  }, [images.length]);
+
+  return (
+    <div className="w-full">
+      {/* Scroll container */}
+      <div
+        ref={scrollRef}
+        className="flex gap-3 overflow-x-auto"
+        style={{
+          scrollSnapType: "x mandatory",
+          WebkitOverflowScrolling: "touch",
+          scrollbarWidth: "none",
+          msOverflowStyle: "none",
+          cursor: images.length > 1 ? "grab" : "default",
+        }}
+        id="product-gallery-scroll"
+      >
+        {/* Hide webkit scrollbar via inline style injection */}
+        <style>{`#product-gallery-scroll::-webkit-scrollbar { display: none; }`}</style>
+
+        {images.map((src, idx) => (
+          <div
+            key={src}
+            className="relative flex-none bg-[#eae7e1] overflow-hidden"
+            style={{
+              scrollSnapAlign: "start",
+              width: images.length === 1 ? "100%" : "calc(80vw - 3rem)",
+              maxWidth: images.length === 1 ? "100%" : "460px",
+              aspectRatio: "4/5",
+            }}
+          >
+            {/* Badges on first image only */}
+            {idx === 0 && badge && (
+              <div className="absolute top-4 left-4 z-10 px-3 py-1.5 bg-[#1a1a1a] text-[#f8f6f2] text-xs font-bold tracking-widest uppercase">
+                {badge}
+              </div>
+            )}
+            {idx === 0 && originalPrice && (
+              <div className={`absolute ${badge ? 'top-14' : 'top-4'} left-4 z-10 px-3 py-1.5 bg-[#c0392b] text-white text-xs font-bold tracking-wider uppercase`}>
+                {Math.round(((originalPrice - price) / originalPrice) * 100)}% OFF
+              </div>
+            )}
+
+            <Image
+              src={src}
+              alt={`${productName} — ${getViewLabel(src, idx)}`}
+              fill
+              className="object-cover object-center"
+              priority={idx === 0}
+              sizes="(max-width: 1024px) 80vw, 460px"
+            />
+
+            {/* View label chip */}
+            {images.length > 1 && (
+              <div className="absolute bottom-3 right-3 px-2.5 py-1 bg-[#1a1a1a]/60 backdrop-blur-sm text-[#f8f6f2] text-[10px] font-semibold tracking-widest uppercase rounded-sm">
+                {getViewLabel(src, idx)}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+
+      {/* Dot indicators (only when multi-image) */}
+      {images.length > 1 && (
+        <div className="flex items-center justify-center gap-2 mt-4" role="tablist" aria-label="Product view selector">
+          {images.map((_, idx) => (
+            <button
+              key={idx}
+              role="tab"
+              aria-selected={activeIndex === idx}
+              aria-label={`View ${idx + 1}`}
+              onClick={() => scrollToIndex(idx)}
+              className="transition-all duration-300 rounded-full"
+              style={{
+                width: activeIndex === idx ? "20px" : "6px",
+                height: "6px",
+                backgroundColor: activeIndex === idx ? "#1a1a1a" : "#1a1a1a40",
+              }}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -80,28 +211,15 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
 
           <div className="flex flex-col lg:flex-row gap-12 lg:gap-24 items-start">
 
-            {/* LEFT: Product Image */}
+            {/* LEFT: Product Image Gallery */}
             <div className="w-full lg:w-[55%] relative">
-              <div className="relative aspect-[4/5] w-full bg-[#eae7e1] overflow-hidden">
-                {product.badge && (
-                  <div className="absolute top-4 left-4 z-10 px-3 py-1.5 bg-[#1a1a1a] text-[#f8f6f2] text-xs font-bold tracking-widest uppercase">
-                    {product.badge}
-                  </div>
-                )}
-                {product.originalPrice && (
-                  <div className={`absolute ${product.badge ? 'top-14' : 'top-4'} left-4 z-10 px-3 py-1.5 bg-[#c0392b] text-white text-xs font-bold tracking-wider uppercase`}>
-                    {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
-                  </div>
-                )}
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="object-cover object-center"
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 55vw"
-                />
-              </div>
+              <ProductGallery
+                images={getProductImages(product)}
+                productName={product.name}
+                badge={product.badge}
+                originalPrice={product.originalPrice}
+                price={product.price}
+              />
             </div>
 
             {/* RIGHT: Product Information */}

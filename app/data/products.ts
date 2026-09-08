@@ -7,6 +7,7 @@ export interface Product {
   category: string;
   sizes?: string[];
   image: string;
+  images?: string[]; // Multi-angle image set (front, back, left, right, 3/4 front, 3/4 back)
   hoverImage?: string;
   badge?: "New" | "Featured" | "Bestseller";
   status?: "coming_soon" | "available";
@@ -28,6 +29,14 @@ export const products: Product[] = [
     originalPrice: 1599,
     sizes: ["S", "M", "L", "XL"],
     image: "/tee-black-front.png",
+    images: [
+      "/products/tee-black/front.png",
+      "/products/tee-black/back.png",
+      "/products/tee-black/left.png",
+      "/products/tee-black/right.png",
+      "/products/tee-black/three-quarter-front.png",
+      "/products/tee-black/three-quarter-back.png",
+    ],
     keyStrengths: [
       "Architectural asymmetrical seaming",
       "Contrasting tonal panel",
@@ -48,6 +57,14 @@ export const products: Product[] = [
     price: 1299,
     sizes: ["S", "M", "L", "XL"],
     image: "/tee-cream-front.png",
+    images: [
+      "/products/tee-cream/front.png",
+      "/products/tee-cream/back.png",
+      "/products/tee-cream/left.png",
+      "/products/tee-cream/right.png",
+      "/products/tee-cream/three-quarter-front.png",
+      "/products/tee-cream/three-quarter-back.png",
+    ],
     badge: "Bestseller",
     keyStrengths: [
       "Sweeping double-stitch seam detail",
@@ -233,3 +250,16 @@ export const products: Product[] = [
     shippingAndReturns: "Free shipping on orders over ₹5,000. 30-day hassle-free returns."
   }
 ];
+
+/**
+ * Returns the full multi-angle image array for a product.
+ * If the product has a populated `images` array, that is returned.
+ * Otherwise falls back to the single `image` field wrapped in an array.
+ * This ensures all 11 products work even before their angle sets are generated.
+ */
+export function getProductImages(product: Product): string[] {
+  if (product.images && product.images.length > 0) {
+    return product.images;
+  }
+  return [product.image];
+}
