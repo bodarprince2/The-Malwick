@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useCallback, memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import WishlistHeart from "../components/WishlistHeart";
@@ -16,7 +16,13 @@ interface ShopClientProps {
 export default function ShopClient({ products }: ShopClientProps) {
   const dispatch = useAppDispatch();
   const cartItems = useAppSelector((state) => state.cart.items);
-  const isProductInCart = (productId: string) => cartItems.some(item => item.productId === productId);
+
+  // O(1) cart lookup using a Set instead of .some() per card
+  const cartProductIds = useMemo(
+    () => new Set(cartItems.map(item => item.productId)),
+    [cartItems]
+  );
+
   const [activeCategory, setActiveCategory] = useState("All");
 
   const categories = useMemo(() => {
@@ -63,95 +69,118 @@ export default function ShopClient({ products }: ShopClientProps) {
       <div className="px-6 md:px-12 py-12">
         <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-6 md:gap-y-12">
           {filteredProducts.map((product) => (
-            <div key={product.id} className="group flex flex-col" id={`product-${product.id}`}>
-              {/* Product image card */}
-              <Link href={`/product/${product.id}`} className="block relative aspect-[3/4] w-full bg-[#eae7e1] overflow-hidden cursor-pointer">
-                {product.badge && (
-                  <div className="absolute top-3 left-3 z-10 px-2 py-1 bg-[#1a1a1a] text-[#f8f6f2] text-[10px] font-bold tracking-widest uppercase">
-                    {product.badge}
-                  </div>
-                )}
-                {product.originalPrice && (
-                  <div className={`absolute ${product.badge ? 'top-10' : 'top-3'} left-3 z-10 px-2 py-1 bg-[#c0392b] text-white text-[10px] font-bold tracking-wider uppercase`}>
-                    {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
-                  </div>
-                )}
-                {/* Wishlist heart */}
-                <div className="absolute top-3 right-3 z-10" onClick={(e) => e.preventDefault()}>
-                  <WishlistHeart product={product} />
-                </div>
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                  sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
-                />
-              </Link>
-
-              {/* Product info */}
-              <div className="pt-4 flex flex-col gap-1.5">
-                <h3 className="font-body text-sm md:text-base font-semibold text-[#1a1a1a] leading-tight line-clamp-1 group-hover:text-[#b8976a] transition-colors">
-                  <Link href={`/product/${product.id}`} className="no-underline text-inherit">
-                    {product.name}
-                  </Link>
-                </h3>
-
-                <div className="flex items-center gap-2 mt-1">
-                  <p className="text-sm md:text-base font-medium text-[#1a1a1a]">
-                    ₹ {product.price.toLocaleString("en-IN")}
-                  </p>
-                  {product.originalPrice && (
-                    <p className="text-xs md:text-sm text-[#8a8a8a] line-through">
-                      ₹ {product.originalPrice.toLocaleString("en-IN")}
-                    </p>
-                  )}
-                </div>
-
-                {isProductInCart(product.id) ? (
-                  <Link
-                    href="/cart"
-                    className="group relative overflow-hidden mt-3 w-full flex items-center justify-center py-3.5 text-xs font-semibold tracking-[0.1em] uppercase transition-colors duration-300 bg-[#b8976a] text-[#f8f6f2]"
-                  >
-                    <span className="inline-flex items-center justify-center transition-transform duration-300 ease-out md:group-hover:-translate-x-3 motion-reduce:transition-none motion-reduce:transform-none">
-                      View Cart
-                    </span>
-                    <span className="absolute right-4 opacity-0 transition-all duration-300 ease-out md:group-hover:opacity-100 md:group-hover:translate-x-0 translate-x-3 hidden md:block motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:transform-none">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                      </svg>
-                    </span>
-                  </Link>
-                ) : (
-                  <button
-                    onClick={(e) => { 
-                      e.preventDefault(); 
-                      e.stopPropagation(); 
-                      dispatch(addToCart({ 
-                        product, 
-                        size: product.sizes?.[0]
-                      }));
-                      toast.success("Product added to cart");
-                    }}
-                    className="group relative overflow-hidden mt-3 w-full flex items-center justify-center py-3.5 text-xs font-semibold tracking-[0.1em] uppercase transition-colors duration-300 bg-[#1a1a1a] text-[#f8f6f2] hover:bg-[#b8976a]"
-                  >
-                    <span className="inline-flex items-center justify-center transition-transform duration-300 ease-out md:group-hover:-translate-x-3 motion-reduce:transition-none motion-reduce:transform-none">
-                      Add to Cart
-                    </span>
-                    <span className="absolute right-4 opacity-0 transition-all duration-300 ease-out md:group-hover:opacity-100 md:group-hover:translate-x-0 translate-x-3 hidden md:block motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:transform-none">
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                      </svg>
-                    </span>
-                  </button>
-                )}
-              </div>
-            </div>
+            <ProductCard
+              key={product.id}
+              product={product}
+              inCart={cartProductIds.has(product.id)}
+              dispatch={dispatch}
+            />
           ))}
         </div>
       </div>
     </main>
   );
 }
+
+/** Memoized product card — prevents re-rendering all cards when one changes */
+const ProductCard = memo(function ProductCard({
+  product,
+  inCart,
+  dispatch,
+}: {
+  product: Product;
+  inCart: boolean;
+  dispatch: ReturnType<typeof useAppDispatch>;
+}) {
+  const handleAddToCart = useCallback((e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    dispatch(addToCart({
+      product,
+      size: product.sizes?.[0]
+    }));
+    toast.success("Product added to cart");
+  }, [dispatch, product]);
+
+  return (
+    <div className="group flex flex-col product-card-lazy" id={`product-${product.id}`}>
+      {/* Product image card */}
+      <Link href={`/product/${product.id}`} className="block relative aspect-[3/4] w-full bg-[#eae7e1] overflow-hidden cursor-pointer">
+        {product.badge && (
+          <div className="absolute top-3 left-3 z-10 px-2 py-1 bg-[#1a1a1a] text-[#f8f6f2] text-[10px] font-bold tracking-widest uppercase">
+            {product.badge}
+          </div>
+        )}
+        {product.originalPrice && (
+          <div className={`absolute ${product.badge ? 'top-10' : 'top-3'} left-3 z-10 px-2 py-1 bg-[#c0392b] text-white text-[10px] font-bold tracking-wider uppercase`}>
+            {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+          </div>
+        )}
+        {/* Wishlist heart */}
+        <div className="absolute top-3 right-3 z-10" onClick={(e) => e.preventDefault()}>
+          <WishlistHeart product={product} />
+        </div>
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          loading="lazy"
+          className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+          sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+        />
+      </Link>
+
+      {/* Product info */}
+      <div className="pt-4 flex flex-col gap-1.5">
+        <h3 className="font-body text-sm md:text-base font-semibold text-[#1a1a1a] leading-tight line-clamp-1 group-hover:text-[#b8976a] transition-colors">
+          <Link href={`/product/${product.id}`} className="no-underline text-inherit">
+            {product.name}
+          </Link>
+        </h3>
+
+        <div className="flex items-center gap-2 mt-1">
+          <p className="text-sm md:text-base font-medium text-[#1a1a1a]">
+            ₹ {product.price.toLocaleString("en-IN")}
+          </p>
+          {product.originalPrice && (
+            <p className="text-xs md:text-sm text-[#8a8a8a] line-through">
+              ₹ {product.originalPrice.toLocaleString("en-IN")}
+            </p>
+          )}
+        </div>
+
+        {inCart ? (
+          <Link
+            href="/cart"
+            className="group relative overflow-hidden mt-3 w-full flex items-center justify-center py-3.5 text-xs font-semibold tracking-[0.1em] uppercase transition-colors duration-300 bg-[#b8976a] text-[#f8f6f2]"
+          >
+            <span className="inline-flex items-center justify-center transition-transform duration-300 ease-out md:group-hover:-translate-x-3 motion-reduce:transition-none motion-reduce:transform-none">
+              View Cart
+            </span>
+            <span className="absolute right-4 opacity-0 transition-all duration-300 ease-out md:group-hover:opacity-100 md:group-hover:translate-x-0 translate-x-3 hidden md:block motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:transform-none">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </span>
+          </Link>
+        ) : (
+          <button
+            onClick={handleAddToCart}
+            className="group relative overflow-hidden mt-3 w-full flex items-center justify-center py-3.5 text-xs font-semibold tracking-[0.1em] uppercase transition-colors duration-300 bg-[#1a1a1a] text-[#f8f6f2] hover:bg-[#b8976a]"
+          >
+            <span className="inline-flex items-center justify-center transition-transform duration-300 ease-out md:group-hover:-translate-x-3 motion-reduce:transition-none motion-reduce:transform-none">
+              Add to Cart
+            </span>
+            <span className="absolute right-4 opacity-0 transition-all duration-300 ease-out md:group-hover:opacity-100 md:group-hover:translate-x-0 translate-x-3 hidden md:block motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:transform-none">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+              </svg>
+            </span>
+          </button>
+        )}
+      </div>
+    </div>
+  );
+});

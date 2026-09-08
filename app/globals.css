@@ -111,3 +111,28 @@ body {
     animation: none;
   }
 }
+
+/* ── Performance utilities ── */
+
+/* Hide scrollbar — used by gallery and shop filters */
+.hide-scrollbar {
+  scrollbar-width: none;         /* Firefox */
+  -ms-overflow-style: none;      /* IE/Edge */
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;                 /* Chrome/Safari */
+}
+
+/* Skip painting off-screen product cards — huge win on the /shop grid */
+.product-card-lazy {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px; /* approximate height for layout stability */
+}
+
+/* GPU-composited scroll container for the gallery */
+.gallery-scroll {
+  will-change: scroll-position;
+  -webkit-overflow-scrolling: touch;
+  scroll-snap-type: x mandatory;
+}
+

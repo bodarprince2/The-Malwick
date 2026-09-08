@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, use, useRef, useEffect, useCallback } from "react";
+import { useState, use, useRef, useEffect, useCallback, useMemo, memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { products, getProductImages } from "@/app/data/products";
+import type { Product } from "@/app/data/products";
 import { useAppDispatch, useAppSelector } from "@/app/store/hooks";
 import { addToCart } from "@/app/store/slices/cartSlice";
 import toast from "react-hot-toast";
@@ -12,8 +13,8 @@ import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
 import WishlistHeart from "@/app/components/WishlistHeart";
 
-// Simple Accordion using details/summary for minimal JS overhead
-const Accordion = ({ title, content }: { title: string; content: string }) => {
+// Memoized Accordion — won't re-render when parent state (size, qty) changes
+const Accordion = memo(function Accordion({ title, content }: { title: string; content: string }) {
   return (
     <details className="group border-b border-[#1a1a1a]/10 [&_summary::-webkit-details-marker]:hidden">
       <summary className="flex cursor-pointer items-center justify-between py-5 text-sm font-semibold tracking-widest uppercase text-[#1a1a1a]">
@@ -29,24 +30,26 @@ const Accordion = ({ title, content }: { title: string; content: string }) => {
       </div>
     </details>
   );
+});
+
+// Cached outside render — no re-allocation on each call
+const VIEW_LABELS: Record<string, string> = {
+  front: "Front",
+  back: "Back",
+  left: "Left",
+  right: "Right",
+  "three-quarter-front": "¾ Front",
+  "three-quarter-back": "¾ Back",
 };
 
 /** Derive a human-readable view label from the image filename */
 function getViewLabel(src: string, index: number): string {
   const name = src.split("/").pop()?.replace(/\.[^.]+$/, "") ?? "";
-  const labels: Record<string, string> = {
-    front: "Front",
-    back: "Back",
-    left: "Left",
-    right: "Right",
-    "three-quarter-front": "¾ Front",
-    "three-quarter-back": "¾ Back",
-  };
-  return labels[name] ?? `View ${index + 1}`;
+  return VIEW_LABELS[name] ?? `View ${index + 1}`;
 }
 
-/** Horizontal scroll image gallery with snap, touch, and dot indicator */
-function ProductGallery({ images, productName, badge, originalPrice, price }: {
+/** Memoized horizontal scroll gallery — won't re-render on size/qty changes */
+const ProductGallery = memo(function ProductGallery({ images, productName, badge, originalPrice, price }: {
   images: string[];
   productName: string;
   badge?: string;
@@ -55,20 +58,33 @@ function ProductGallery({ images, productName, badge, originalPrice, price }: {
 }) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const rafRef = useRef<number | null>(null);
 
-  // Sync active dot to scroll position
+  // Memoize discount percentage to avoid recalculating during scrolls
+  const discountPct = useMemo(() => {
+    if (!originalPrice) return 0;
+    return Math.round(((originalPrice - price) / originalPrice) * 100);
+  }, [originalPrice, price]);
+
+  // Debounced scroll handler using rAF — prevents layout thrashing
   useEffect(() => {
     const el = scrollRef.current;
     if (!el || images.length <= 1) return;
 
     const handleScroll = () => {
-      const itemWidth = el.scrollWidth / images.length;
-      const newIndex = Math.round(el.scrollLeft / itemWidth);
-      setActiveIndex(Math.max(0, Math.min(newIndex, images.length - 1)));
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      rafRef.current = requestAnimationFrame(() => {
+        const itemWidth = el.scrollWidth / images.length;
+        const newIndex = Math.round(el.scrollLeft / itemWidth);
+        setActiveIndex(Math.max(0, Math.min(newIndex, images.length - 1)));
+      });
     };
 
     el.addEventListener("scroll", handleScroll, { passive: true });
-    return () => el.removeEventListener("scroll", handleScroll);
+    return () => {
+      el.removeEventListener("scroll", handleScroll);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    };
   }, [images.length]);
 
   const scrollToIndex = useCallback((idx: number) => {
@@ -80,22 +96,15 @@ function ProductGallery({ images, productName, badge, originalPrice, price }: {
 
   return (
     <div className="w-full">
-      {/* Scroll container */}
+      {/* Scroll container — CSS class handles GPU compositing + scrollbar hiding */}
       <div
         ref={scrollRef}
-        className="flex gap-3 overflow-x-auto"
+        className="flex gap-3 overflow-x-auto hide-scrollbar gallery-scroll"
         style={{
-          scrollSnapType: "x mandatory",
-          WebkitOverflowScrolling: "touch",
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
           cursor: images.length > 1 ? "grab" : "default",
         }}
         id="product-gallery-scroll"
       >
-        {/* Hide webkit scrollbar via inline style injection */}
-        <style>{`#product-gallery-scroll::-webkit-scrollbar { display: none; }`}</style>
-
         {images.map((src, idx) => (
           <div
             key={src}
@@ -115,7 +124,7 @@ function ProductGallery({ images, productName, badge, originalPrice, price }: {
             )}
             {idx === 0 && originalPrice && (
               <div className={`absolute ${badge ? 'top-14' : 'top-4'} left-4 z-10 px-3 py-1.5 bg-[#c0392b] text-white text-xs font-bold tracking-wider uppercase`}>
-                {Math.round(((originalPrice - price) / originalPrice) * 100)}% OFF
+                {discountPct}% OFF
               </div>
             )}
 
@@ -125,6 +134,7 @@ function ProductGallery({ images, productName, badge, originalPrice, price }: {
               fill
               className="object-cover object-center"
               priority={idx === 0}
+              loading={idx === 0 ? "eager" : "lazy"}
               sizes="(max-width: 1024px) 80vw, 460px"
             />
 
@@ -160,7 +170,27 @@ function ProductGallery({ images, productName, badge, originalPrice, price }: {
       )}
     </div>
   );
-}
+});
+
+/** Memoized related product card — avoids re-rendering all 4 when one hovers */
+const RelatedProductCard = memo(function RelatedProductCard({ product }: { product: Product }) {
+  return (
+    <Link href={`/product/${product.id}`} className="group block">
+      <div className="relative aspect-[3/4] w-full bg-[#eae7e1] overflow-hidden mb-4">
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          loading="lazy"
+          className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
+          sizes="(max-width: 768px) 50vw, 25vw"
+        />
+      </div>
+      <h3 className="text-sm font-semibold text-[#1a1a1a] mb-1 group-hover:text-[#b8976a] transition-colors">{product.name}</h3>
+      <p className="text-sm text-[#8a8a8a]">₹ {product.price.toLocaleString("en-IN")}</p>
+    </Link>
+  );
+});
 
 export default function ProductDetailPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
@@ -191,7 +221,14 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
     toast.success("Product added to cart");
   };
 
-  const relatedProducts = products.filter(p => p.id !== product.id).slice(0, 4);
+  // Memoize product images — no recalc when size/qty state changes
+  const productImages = useMemo(() => getProductImages(product), [product]);
+
+  // Memoize related products — stable reference across re-renders
+  const relatedProducts = useMemo(
+    () => products.filter(p => p.id !== product.id).slice(0, 4),
+    [product.id]
+  );
 
   return (
     <div className="min-h-screen flex flex-col bg-[#f8f6f2] selection:bg-[#b8976a] selection:text-white">
@@ -214,7 +251,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
             {/* LEFT: Product Image Gallery */}
             <div className="w-full lg:w-[55%] relative">
               <ProductGallery
-                images={getProductImages(product)}
+                images={productImages}
                 productName={product.name}
                 badge={product.badge}
                 originalPrice={product.originalPrice}
@@ -398,18 +435,7 @@ export default function ProductDetailPage({ params }: { params: Promise<{ id: st
               <h2 className="text-xs font-semibold tracking-widest uppercase text-[#8a8a8a] mb-12 text-center">You May Also Like</h2>
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-12">
                 {relatedProducts.map(rp => (
-                  <Link key={rp.id} href={`/product/${rp.id}`} className="group block">
-                    <div className="relative aspect-[3/4] w-full bg-[#eae7e1] overflow-hidden mb-4">
-                      <Image
-                        src={rp.image}
-                        alt={rp.name}
-                        fill
-                        className="object-cover object-center transition-transform duration-700 group-hover:scale-105"
-                      />
-                    </div>
-                    <h3 className="text-sm font-semibold text-[#1a1a1a] mb-1 group-hover:text-[#b8976a] transition-colors">{rp.name}</h3>
-                    <p className="text-sm text-[#8a8a8a]">₹ {rp.price.toLocaleString("en-IN")}</p>
-                  </Link>
+                  <RelatedProductCard key={rp.id} product={rp} />
                 ))}
               </div>
             </div>
