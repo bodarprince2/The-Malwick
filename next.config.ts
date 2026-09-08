@@ -1,6 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Enable source maps in production for debugging
+  productionBrowserSourceMaps: true,
+
   // Compress responses with gzip/brotli
   compress: true,
 
