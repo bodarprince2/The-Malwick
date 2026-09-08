@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default function FeaturedProduct() {
   return (
@@ -27,11 +28,11 @@ export default function FeaturedProduct() {
             <span className="w-8 h-[1px] bg-[#b8976a]" aria-hidden="true" />
             <span className="text-xs font-semibold tracking-[0.2em] uppercase text-[#b8976a]">The Essential</span>
           </div>
-          
+
           <h2 className="font-display text-4xl md:text-5xl lg:text-6xl font-medium leading-[1.1] text-[#1a1a1a] mb-6">
             Heavyweight <br /> Drop-Shoulder Tee
           </h2>
-          
+
           <p className="text-lg leading-relaxed text-[#5a5a5a] mb-8 max-w-lg">
             Redefining the everyday staple. Crafted from custom-milled 280GSM organic cotton, this piece offers an impeccable structured drape with a buttery soft handfeel. Designed with a relaxed drop-shoulder silhouette and a tightened ribbed collar for a refined, modern aesthetic.
           </p>
@@ -45,19 +46,19 @@ export default function FeaturedProduct() {
             ].map((feature, i) => (
               <li key={i} className="flex items-start gap-3" style={{ transitionDelay: `${i * 100}ms` }}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" className="shrink-0 mt-0.5 text-[#b8976a]" aria-hidden="true">
-                  <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <span className="text-sm text-[#1a1a1a]">{feature}</span>
               </li>
             ))}
           </ul>
 
-          <a href="#signup-section" className="inline-flex items-center justify-center gap-3 bg-[#1a1a1a] text-[#f8f6f2] px-8 py-4 text-sm font-semibold tracking-widest uppercase rounded shadow hover:bg-[#2d2d2d] hover:shadow-lg transition-all border border-[#1a1a1a] min-h-[44px]">
+          <Link href="/shop" className="inline-flex items-center justify-center gap-3 bg-[#1a1a1a] text-[#f8f6f2] px-8 py-4 text-sm font-semibold tracking-widest uppercase rounded shadow hover:bg-[#2d2d2d] hover:shadow-lg transition-all border border-[#1a1a1a] min-h-[44px]">
             <span>Explore Details</span>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
-              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
     </section>

@@ -139,7 +139,7 @@ const ProductCard = memo(function ProductCard({
         </h3>
 
         <div className="flex items-center gap-2 mt-1">
-          <p className="text-sm md:text-base font-medium text-[#1a1a1a]">
+          <p className="text-sm md:text-base font-bold text-black">
             ₹ {product.price.toLocaleString("en-IN")}
           </p>
           {product.originalPrice && (

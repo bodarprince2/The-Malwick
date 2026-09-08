@@ -174,29 +174,35 @@ export default function CartPage() {
                 <h3 className="font-display text-lg font-medium text-[#8a8a8a] mb-4 uppercase tracking-widest">Billing Details</h3>
 
                 <div className="bg-white border border-[#1a1a1a]/10 rounded-sm">
-                  <div className="flex justify-between items-center p-5 border-b border-[#1a1a1a]/10">
-                    <span className="text-[#5a5a5a] font-medium text-base">Cart Total <span className="text-sm font-normal">(Incl. of all taxes)</span></span>
-                    <span className="font-bold text-lg text-[#1a1a1a]">₹ {mrpTotal.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  <div className="flex justify-between items-start sm:items-center p-5 border-b border-[#1a1a1a]/10 gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-baseline sm:gap-2">
+                      <span className="text-[#5a5a5a] font-medium text-base">Cart Total</span>
+                      <span className="text-sm font-normal text-[#8a8a8a]">(Incl. of all taxes)</span>
+                    </div>
+                    <span className="font-bold text-lg text-[#1a1a1a] whitespace-nowrap flex-shrink-0">₹ {mrpTotal.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
 
                   {discountAmount > 0 && (
-                    <div className="flex justify-between items-center p-5 border-b border-[#1a1a1a]/10 bg-gradient-to-r from-purple-100/40 to-pink-100/40">
-                      <span className="text-[#1a1a1a] font-bold text-base">Discount</span>
-                      <span className="font-bold text-lg text-[#1a1a1a]">- ₹ {discountAmount.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                    <div className="flex justify-between items-center p-5 border-b border-[#1a1a1a]/10 bg-gradient-to-r from-purple-100/40 to-pink-100/40 gap-2">
+                      <span className="text-[#1a1a1a] font-bold text-base whitespace-nowrap">Discount</span>
+                      <span className="font-bold text-lg text-[#1a1a1a] whitespace-nowrap flex-shrink-0">- ₹ {discountAmount.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                     </div>
                   )}
 
-                  <div className="flex justify-between items-center p-5 border-b border-[#1a1a1a]/10">
-                    <span className="text-[#5a5a5a] font-medium text-base">Shipping Charges</span>
-                    <div className="flex items-center gap-3">
+                  <div className="flex justify-between items-center p-5 border-b border-[#1a1a1a]/10 gap-2">
+                    <span className="text-[#5a5a5a] font-medium text-base whitespace-nowrap">Shipping Charges</span>
+                    <div className="flex items-center gap-2 sm:gap-3 whitespace-nowrap flex-shrink-0">
                       <span className="font-bold text-[#008763] text-lg">Free</span>
                       <span className="text-[#8a8a8a] line-through text-base">₹ 50.00</span>
                     </div>
                   </div>
 
-                  <div className="flex justify-between items-center p-5">
-                    <span className="text-[#1a1a1a] font-bold text-lg">Total Amount <span className="text-sm font-normal text-[#5a5a5a]">(Incl. of GST)</span></span>
-                    <span className="font-bold text-xl text-[#1a1a1a]">₹ {total.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  <div className="flex justify-between items-start sm:items-center p-5 gap-2">
+                    <div className="flex flex-col sm:flex-row sm:items-baseline sm:gap-2">
+                      <span className="text-[#1a1a1a] font-bold text-lg">Total Amount</span>
+                      <span className="text-sm font-normal text-[#5a5a5a]">(Incl. of GST)</span>
+                    </div>
+                    <span className="font-bold text-xl text-[#1a1a1a] whitespace-nowrap flex-shrink-0">₹ {total.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                   </div>
                 </div>
 

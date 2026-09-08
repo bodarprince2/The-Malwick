@@ -108,12 +108,12 @@ export default function Home() {
 
             {/* CTA Button in hero */}
             <div className="animate-fade-in-up delay-800 w-full lg:w-auto mt-2">
-              <a href="#signup-section" className="w-full lg:w-auto inline-flex items-center justify-center gap-3 bg-[#1a1a1a] text-[#f8f6f2] px-8 py-4 text-sm font-semibold tracking-widest uppercase rounded shadow hover:bg-[#2d2d2d] hover:shadow-lg transition-all border border-[#1a1a1a] min-h-[44px]">
-                <span>Join The Waitlist</span>
+              <Link href="/shop" className="w-full lg:w-auto inline-flex items-center justify-center gap-3 bg-[#1a1a1a] text-[#f8f6f2] px-8 py-4 text-sm font-semibold tracking-widest uppercase rounded shadow hover:bg-[#2d2d2d] hover:shadow-lg transition-all border border-[#1a1a1a] min-h-[44px]">
+                <span>Pre-Shop Now</span>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="transition-transform group-hover:translate-x-1">
                   <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-              </a>
+              </Link>
             </div>
           </div>
 

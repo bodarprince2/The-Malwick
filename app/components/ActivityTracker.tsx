@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { usePathname } from "next/navigation";
 
 // Paths that should NOT be tracked (admin pages)
-const EXCLUDED_PATHS = ["/json-data"];
+const EXCLUDED_PATHS = ["/admin"];
 
 // ── Cached IDs (avoid repeated localStorage/sessionStorage reads) ──
 
@@ -90,14 +90,41 @@ export default function ActivityTracker() {
 
     // Defer to idle callback — never blocks paint/interaction
     scheduleIdle(() => {
+      // 1. Send to MongoDB
+      const eventType = pathname.startsWith('/product/') ? 'view_product' :
+                        pathname === '/shop' ? 'view_shop' : 'page_view';
+                        
       sendTrackEvent({
-        eventType: "page_view",
+        eventType,
         page: pathname,
         referrer: document.referrer || null,
         deviceId: getDeviceId(),
         sessionId: getSessionId(),
         userAgent: navigator.userAgent,
       });
+      
+      // 2. Send to GA4
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      if (typeof window !== "undefined" && typeof (window as any).gtag === "function") {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        const gtag = (window as any).gtag;
+        if (eventType === 'view_product') {
+          // Extract product ID from path (e.g. /product/123 -> 123)
+          const productId = pathname.split('/').pop();
+          gtag('event', 'view_item', {
+            currency: 'USD',
+            value: 0,
+            items: [{ item_id: productId }]
+          });
+        } else if (eventType === 'view_shop') {
+          gtag('event', 'view_shop_page');
+        } else {
+          // Default page view
+          gtag('event', 'page_view', {
+            page_path: pathname
+          });
+        }
+      }
     });
   }, [pathname]);
 
