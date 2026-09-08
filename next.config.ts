@@ -17,13 +17,6 @@ const nextConfig: NextConfig = {
       ],
     },
     {
-      // JS/CSS bundles: immutable (hashed filenames)
-      source: "/_next/static/:path*",
-      headers: [
-        { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
-      ],
-    },
-    {
       // Pages: short cache + stale-while-revalidate for near-instant navigations
       source: "/:path*",
       headers: [
@@ -41,7 +34,7 @@ const nextConfig: NextConfig = {
     // 90-day cache — product images change rarely
     minimumCacheTTL: 60 * 60 * 24 * 90,
     // Prevent over-compression of product photography
-    qualities: [75, 85, 95],
+    qualities: [75, 80, 85, 95],
   },
 
   // Keep false — strict mode double-fires effects, causing duplicate tracking
