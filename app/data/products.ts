@@ -85,6 +85,14 @@ export const products: Product[] = [
     price: 1499,
     sizes: ["XS", "S", "M", "L", "XL"],
     image: "/tee-sand-front.png",
+    images: [
+      "/products/tee-sand/front.png",
+      "/products/tee-sand/back.png",
+      "/products/tee-sand/left.png",
+      "/products/tee-sand/right.png",
+      "/products/tee-sand/three-quarter-front.png",
+      "/products/tee-sand/three-quarter-back.png",
+    ],
     keyStrengths: [
       "Clean minimal silhouette",
       "Refined crew neckline",
@@ -103,6 +111,14 @@ export const products: Product[] = [
     price: 1699,
     sizes: ["S", "M", "L"],
     image: "/products/oat_tee.png",
+    images: [
+      "/products/tee-oat/front.png",
+      "/products/tee-oat/back.png",
+      "/products/tee-oat/left.png",
+      "/products/tee-oat/right.png",
+      "/products/tee-oat/three-quarter-front.png",
+      "/products/tee-oat/three-quarter-back.png",
+    ],
     keyStrengths: [
       "Structured short-sleeve profile",
       "Warm heritage oat shade",

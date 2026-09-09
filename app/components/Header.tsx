@@ -20,8 +20,8 @@ export default function Header({ variant = "solid" }: HeaderProps) {
   }, []);
 
   const headerClass = variant === "transparent"
-    ? "site-header fixed top-0 left-0 right-0 z-[100] px-6 py-6 md:px-12 flex items-center justify-between transition-all duration-500 bg-transparent [&.scrolled]:bg-[#f8f6f2]/95 [&.scrolled]:backdrop-blur-md [&.scrolled]:border-b [&.scrolled]:border-[#1a1a1a]/10 [&.scrolled]:py-4 animate-fade-in"
-    : "w-full px-6 py-6 md:px-12 flex items-center justify-between border-b border-[#1a1a1a]/10 bg-[#f8f6f2] z-[100] relative";
+    ? "site-header fixed top-0 left-0 right-0 z-[100] px-4 md:px-12 py-1.5 md:py-3 flex items-center justify-between transition-all duration-500 bg-transparent [&.scrolled]:bg-[#f8f6f2]/95 [&.scrolled]:backdrop-blur-md [&.scrolled]:border-b [&.scrolled]:border-[#1a1a1a]/10 [&.scrolled]:py-1 md:[&.scrolled]:py-2 animate-fade-in"
+    : "w-full px-4 md:px-12 py-1.5 md:py-3 flex items-center justify-between border-b border-[#1a1a1a]/10 bg-[#f8f6f2] z-[100] relative";
 
   return (
     <header className={headerClass} id="site-header">
@@ -31,13 +31,13 @@ export default function Header({ variant = "solid" }: HeaderProps) {
           alt="The Melwick Logo"
           width={84}
           height={56}
-          className="h-[52px] md:h-[56px] w-auto object-contain"
+          className="h-[44px] md:h-[56px] w-auto object-contain"
           priority
         />
       </Link>
-      
+
       <div className="flex items-center gap-4 md:gap-6 z-[101]">
-        
+
         {/* Cart and Wishlist Icons */}
         <div className="flex items-center gap-4 md:gap-6">
           <Link href="/wishlist" className="relative text-[#1a1a1a] hover:text-[#b8976a] transition-colors" aria-label="Wishlist">
@@ -50,7 +50,7 @@ export default function Header({ variant = "solid" }: HeaderProps) {
               </span>
             )}
           </Link>
-          
+
           <Link href="/cart" className="relative text-[#1a1a1a] hover:text-[#b8976a] transition-colors" aria-label="Cart">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="9" cy="21" r="1" />

@@ -22,14 +22,14 @@ export default async function AdminPage({
 
   return (
     <main className="min-h-screen bg-[#f8f6f2] flex flex-col">
-      {/* Designer Refined Admin Header */}
-      <header className="w-full px-6 py-4 md:px-12 flex items-center justify-between bg-[#f8f6f2]/90 backdrop-blur-xl z-50 sticky top-0 border-b border-black/5 shadow-[0_4px_30px_rgba(0,0,0,0.02)] transition-all duration-300">
-        <div className="flex items-center gap-4 z-10">
+      {/* Admin Header */}
+      <header className="w-full px-4 py-3 sm:px-6 sm:py-4 md:px-12 flex items-center justify-between bg-[#f8f6f2]/90 backdrop-blur-xl z-50 sticky top-0 border-b border-black/5 shadow-[0_4px_30px_rgba(0,0,0,0.02)] transition-all duration-300">
+        <div className="flex items-center gap-3 sm:gap-4 z-10">
           <Link href="/" className="transition-transform duration-300 hover:scale-105">
             <img
               src="/logo.png"
               alt="The Melwick Logo"
-              className="h-[36px] md:h-[44px] w-auto object-contain drop-shadow-sm"
+              className="h-[32px] sm:h-[36px] md:h-[44px] w-auto object-contain drop-shadow-sm"
             />
           </Link>
           <div className="h-6 w-[1px] bg-black/10 hidden md:block"></div>
@@ -38,7 +38,7 @@ export default async function AdminPage({
           </span>
         </div>
         
-        {/* Admin Navigation */}
+        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-1">
           <Link href="/admin?tab=activity" className="relative px-4 py-2.5 group">
             <span className={`${currentTab === 'activity' ? 'text-[#1a1a1a]' : 'text-[#1a1a1a]/60 group-hover:text-[#1a1a1a]'} font-medium text-sm tracking-wide transition-colors z-10 relative`}>
@@ -75,9 +75,9 @@ export default async function AdminPage({
         </nav>
 
         {/* Profile/Actions */}
-        <div className="flex items-center gap-5 z-10">
+        <div className="flex items-center gap-3 sm:gap-5 z-10">
           <button className="relative p-2 text-black/40 hover:text-black transition-colors rounded-full hover:bg-black/5">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="sm:w-5 sm:h-5">
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
               <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
             </svg>
@@ -90,7 +90,7 @@ export default async function AdminPage({
               <span className="text-[10px] font-medium text-black/50 tracking-widest uppercase leading-none">System</span>
             </div>
             <div className="relative">
-              <div className="h-10 w-10 rounded-full border border-black/10 flex items-center justify-center text-black font-semibold text-sm bg-white shadow-sm group-hover:shadow-md group-hover:border-black/30 transition-all duration-300">
+              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full border border-black/10 flex items-center justify-center text-black font-semibold text-xs sm:text-sm bg-white shadow-sm group-hover:shadow-md group-hover:border-black/30 transition-all duration-300">
                 AD
               </div>
             </div>
@@ -98,16 +98,69 @@ export default async function AdminPage({
         </div>
       </header>
 
-      {/* Main Content Area */}
-      <div className="flex-grow">
+      {/* Main Content Area — add bottom padding on mobile for the tab bar */}
+      <div className="flex-grow pb-20 md:pb-0">
         {currentTab === 'activity' && <AdminActivitiesClient />}
         {currentTab === 'orders' && <AdminOrdersClient />}
         {currentTab === 'notify' && (
-          <div className="flex items-center justify-center min-h-[50vh] text-[#5a5a5a]">
+          <div className="flex items-center justify-center min-h-[50vh] text-[#5a5a5a] px-6">
             Notify Email view coming soon.
           </div>
         )}
       </div>
+
+      {/* Mobile Bottom Tab Bar — visible only on small screens */}
+      <nav className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-[#f8f6f2]/95 backdrop-blur-xl border-t border-black/10 shadow-[0_-4px_30px_rgba(0,0,0,0.05)]">
+        <div className="flex items-stretch">
+          <Link
+            href="/admin?tab=activity"
+            className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-colors ${
+              currentTab === 'activity' ? 'text-[#1a1a1a]' : 'text-[#1a1a1a]/40'
+            }`}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+            </svg>
+            <span className="text-[10px] font-semibold tracking-wider uppercase">Activity</span>
+            {currentTab === 'activity' && (
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-[2px] bg-[#1a1a1a] rounded-full"></div>
+            )}
+          </Link>
+
+          <Link
+            href="/admin?tab=notify"
+            className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-colors ${
+              currentTab === 'notify' ? 'text-[#1a1a1a]' : 'text-[#1a1a1a]/40'
+            }`}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+              <polyline points="22,6 12,13 2,6" />
+            </svg>
+            <span className="text-[10px] font-semibold tracking-wider uppercase">Notify</span>
+            {currentTab === 'notify' && (
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-[2px] bg-[#1a1a1a] rounded-full"></div>
+            )}
+          </Link>
+
+          <Link
+            href="/admin?tab=orders"
+            className={`flex-1 flex flex-col items-center justify-center gap-1 py-3 transition-colors relative ${
+              currentTab === 'orders' ? 'text-[#1a1a1a]' : 'text-[#1a1a1a]/40'
+            }`}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <path d="M16 10a4 4 0 01-8 0" />
+            </svg>
+            <span className="text-[10px] font-semibold tracking-wider uppercase">Orders</span>
+            {currentTab === 'orders' && (
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-[2px] bg-[#1a1a1a] rounded-full"></div>
+            )}
+          </Link>
+        </div>
+      </nav>
     </main>
   );
 }
