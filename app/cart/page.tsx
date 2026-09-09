@@ -20,6 +20,7 @@ import {
 } from "@/app/store/slices/cartSlice";
 import Header from "@/app/components/Header";
 import Footer from "@/app/components/Footer";
+import CustomDropdown from "@/app/components/CustomDropdown";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -95,19 +96,13 @@ export default function CartPage() {
                           {item.size && (
                             <div className="flex items-center gap-2 mt-1">
                               <span className="text-xs md:text-sm text-[#5a5a5a]">Size:</span>
-                              <div className="relative">
-                                <select
+                              <div className="w-[64px] md:w-[72px]">
+                                <CustomDropdown
+                                  compact
                                   value={item.size}
-                                  onChange={(e) => dispatch(updateItemSize({ id: item.id, newSize: e.target.value }))}
-                                  className="appearance-none text-[10px] md:text-xs font-semibold tracking-wider uppercase text-[#1a1a1a] bg-white border border-[#1a1a1a]/20 rounded-none pl-2 pr-6 md:pl-3 md:pr-8 py-1 md:py-1.5 focus:outline-none focus:border-[#1a1a1a] cursor-pointer hover:border-[#1a1a1a]/40 transition-colors"
-                                >
-                                  {products.find(p => p.id === item.productId)?.sizes?.map(size => (
-                                    <option key={size} value={size}>{size}</option>
-                                  ))}
-                                </select>
-                                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-1 md:px-2 text-[#1a1a1a]">
-                                  <svg className="fill-current h-2 w-2 md:h-3 md:w-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
-                                </div>
+                                  options={products.find(p => p.id === item.productId)?.sizes?.map(size => ({ label: size, value: size })) || []}
+                                  onChange={(newSize) => dispatch(updateItemSize({ id: item.id, newSize }))}
+                                />
                               </div>
                             </div>
                           )}

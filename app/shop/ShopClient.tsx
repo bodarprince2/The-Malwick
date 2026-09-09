@@ -8,6 +8,8 @@ import { Product } from "../data/products";
 import { useAppDispatch, useAppSelector } from "../store/hooks";
 import { addToCart } from "../store/slices/cartSlice";
 import toast from "react-hot-toast";
+import CustomDropdown from "../components/CustomDropdown";
+
 
 interface ShopClientProps {
   products: Product[];
@@ -24,6 +26,7 @@ export default function ShopClient({ products }: ShopClientProps) {
   );
 
   const [activeCategory, setActiveCategory] = useState("All");
+  const [sortBy, setSortBy] = useState("featured");
 
   const categories = useMemo(() => {
     const cats = new Set(products.map((p) => p.category));
@@ -35,40 +38,56 @@ export default function ShopClient({ products }: ShopClientProps) {
     return products.filter((p) => p.category === activeCategory);
   }, [products, activeCategory]);
 
+  const sortedProducts = useMemo(() => {
+    let result = [...filteredProducts];
+    if (sortBy === "price-low") {
+      result.sort((a, b) => a.price - b.price);
+    } else if (sortBy === "price-high") {
+      result.sort((a, b) => b.price - a.price);
+    } else if (sortBy === "newest") {
+      result.reverse();
+    }
+    return result;
+  }, [filteredProducts, sortBy]);
+
   return (
     <main className="flex-1">
-      {/* Page title bar */}
-      <div className="px-6 md:px-12 py-8 border-b border-[#1a1a1a]/10">
-        <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <h1 className="font-display text-2xl md:text-3xl font-medium text-[#1a1a1a]">
-            {activeCategory === "All" ? "All Products" : activeCategory}
-          </h1>
-          <span className="text-sm text-[#8a8a8a]">{filteredProducts.length} items</span>
-        </div>
-      </div>
+      {/* Compact Title & Filter Bar */}
+      <div className="px-6 md:px-12 py-4 border-b border-[#1a1a1a]/10 bg-[#f8f6f2]">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-baseline gap-3">
+            <h1 className="font-display text-xl font-medium text-[#1a1a1a]">
+              {activeCategory === "All" ? "All Products" : activeCategory}
+            </h1>
+            <span className="text-xs text-[#8a8a8a]">{sortedProducts.length} items</span>
+          </div>
 
-      {/* Category filter pills */}
-      <div className="px-6 md:px-12 py-5 border-b border-[#1a1a1a]/5 overflow-x-auto hide-scrollbar">
-        <div className="max-w-7xl mx-auto flex gap-3">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setActiveCategory(cat)}
-              className={`shrink-0 px-5 py-2.5 rounded-full text-xs font-semibold tracking-[0.1em] uppercase transition-all duration-300 border ${activeCategory === cat
-                  ? "bg-[#1a1a1a] text-[#f8f6f2] border-[#1a1a1a]"
-                  : "bg-transparent text-[#1a1a1a] border-[#1a1a1a]/20 hover:border-[#1a1a1a]/50 hover:bg-[#1a1a1a]/5"
-                }`}
-            >
-              {cat}
-            </button>
-          ))}
+          <div className="flex items-center gap-3 w-full sm:w-auto">
+            <CustomDropdown
+              className="flex-1 sm:flex-none sm:w-[180px]"
+              value={activeCategory}
+              options={categories.map((cat) => ({ label: cat, value: cat }))}
+              onChange={setActiveCategory}
+            />
+            <CustomDropdown
+              className="flex-1 sm:flex-none sm:w-[180px]"
+              value={sortBy}
+              options={[
+                { label: "Featured", value: "featured" },
+                { label: "Price: Low - High", value: "price-low" },
+                { label: "Price: High - Low", value: "price-high" },
+                { label: "Newest", value: "newest" },
+              ]}
+              onChange={setSortBy}
+            />
+          </div>
         </div>
       </div>
 
       {/* Product grid */}
-      <div className="px-6 md:px-12 py-12">
+      <div className="px-6 md:px-12 py-8">
         <div className="max-w-7xl mx-auto grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-6 md:gap-y-12">
-          {filteredProducts.map((product) => (
+          {sortedProducts.map((product) => (
             <ProductCard
               key={product.id}
               product={product}
@@ -154,8 +173,13 @@ const ProductCard = memo(function ProductCard({
             href="/cart"
             className="group relative overflow-hidden mt-3 w-full flex items-center justify-center py-3.5 text-xs font-semibold tracking-[0.1em] uppercase transition-colors duration-300 bg-[#b8976a] text-[#f8f6f2]"
           >
-            <span className="inline-flex items-center justify-center transition-transform duration-300 ease-out md:group-hover:-translate-x-3 motion-reduce:transition-none motion-reduce:transform-none">
-              View Cart
+            <span className="inline-flex items-center gap-2 justify-center transition-transform duration-300 ease-out md:group-hover:-translate-x-3 motion-reduce:transition-none motion-reduce:transform-none">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="9" cy="21" r="1" />
+                <circle cx="20" cy="21" r="1" />
+                <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+              </svg>
+              Added
             </span>
             <span className="absolute right-4 opacity-0 transition-all duration-300 ease-out md:group-hover:opacity-100 md:group-hover:translate-x-0 translate-x-3 hidden md:block motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:transform-none">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">

@@ -356,8 +356,13 @@ export default function ProductDetailClient({ id }: { id: string }) {
                       href="/cart"
                       className="group relative overflow-hidden flex-1 h-14 flex items-center justify-center bg-[#b8976a] text-[#f8f6f2] text-xs font-semibold tracking-widest uppercase transition-colors duration-300"
                     >
-                      <span className="inline-flex items-center justify-center transition-transform duration-300 ease-out md:group-hover:-translate-x-3 motion-reduce:transition-none motion-reduce:transform-none">
-                        View Cart
+                      <span className="inline-flex items-center gap-2 justify-center transition-transform duration-300 ease-out md:group-hover:-translate-x-3 motion-reduce:transition-none motion-reduce:transform-none">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="9" cy="21" r="1" />
+                          <circle cx="20" cy="21" r="1" />
+                          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                        </svg>
+                        Added
                       </span>
                       <span className="absolute right-4 md:right-6 opacity-0 transition-all duration-300 ease-out md:group-hover:opacity-100 md:group-hover:translate-x-0 translate-x-3 hidden md:block motion-reduce:transition-none motion-reduce:opacity-100 motion-reduce:transform-none">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
